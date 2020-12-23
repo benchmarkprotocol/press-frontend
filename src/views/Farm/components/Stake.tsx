@@ -102,15 +102,14 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, name }) => {
                   text="Unstake"
                   onClick={onPresentWithdraw}
                 />
-                {(new Date() < new Date(1608814800*1000)) ?
+
                 <div style={{position: 'absolute', right: -75, }}>
                 
                 <IconButton onClick={onPresentDeposit}>
                   <AddIcon />
                 </IconButton>
                 </div>
-                : null
-              }
+
               </>
             )}
           </StyledCardActions>

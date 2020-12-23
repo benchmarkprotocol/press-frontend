@@ -12,13 +12,7 @@ const Nav: React.FC = () => {
         Pools
       </StyledLink>
       <StyledAbsoluteLink
-        href="https://www.youtube.com/watch?v=LnrFEBsbV0k"
-        target="_blank"
-      >
-        Video Tutorial
-      </StyledAbsoluteLink>
-      <StyledAbsoluteLink
-        href="https://benchmarkprotocol.medium.com/benchmark-launchpad-farming-guide-5941b02859e7"
+        href="https://medium.com/benchmarkprotocol/transitioning-from-benchmark-launchpad-to-the-press-80e480ee4bc7"
         target="_blank"
       >
         About

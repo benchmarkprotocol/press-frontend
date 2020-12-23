@@ -14,7 +14,8 @@ import useAllStakedValue from '../../../hooks/useAllStakedValue'
 import useFarms from '../../../hooks/useFarms'
 import useTokenBalance from '../../../hooks/useTokenBalance'
 import useSushi from '../../../hooks/useSushi'
-import { getSushiAddress, getSushiSupply } from '../../../sushi/utils'
+import useMarkPerBlock from '../../../hooks/useMarkPerBlock'
+import { getSushiAddress, getSushiSupply, } from '../../../sushi/utils'
 import { getBalanceNumber } from '../../../utils/formatBalance'
 import markIcon from '../../assets/img/mark.png'
 import Countdown from 'react-countdown';
@@ -88,6 +89,7 @@ const Balances: React.FC = () => {
   const sushiBalance = useTokenBalance(getSushiAddress(sushi))
   const { account, ethereum }: { account: any; ethereum: any } = useWallet()
 
+  const markPerBlock = useMarkPerBlock(sushi);
 
 /*
   if (allStakedValue && allStakedValue[0]){
@@ -151,8 +153,8 @@ const Balances: React.FC = () => {
           />
         </CardContent>
         <Footnote>
-          Rewards per block
-          <FootnoteValue>34.16</FootnoteValue>
+          MARK per block
+          <FootnoteValue>{(!!account && sushi && markPerBlock) ? markPerBlock : '---'}</FootnoteValue>
         </Footnote>
         </Flip>
       </Card>
@@ -168,8 +170,8 @@ const Balances: React.FC = () => {
           />
         </CardContent>
         <Footnote>
-          Total rewards
-          <FootnoteValue>6.75m MARK</FootnoteValue>
+          Active Pools
+          <FootnoteValue>{farms.length}</FootnoteValue>
         </Footnote>
         </Flip>
       </Card>

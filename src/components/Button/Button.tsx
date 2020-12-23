@@ -130,6 +130,7 @@ const StyledButton = styled.button<StyledButtonProps>`
   pointer-events: ${props => !props.disabled ? undefined : 'none'};
   width: ${props => !props.pools ? "100%" : "60%"};
   margin: ${props => !props.pools ? "auto" : "0 auto"};
+  box-shadow: ${props => !props.pools ?  "0": "0px 0px 10px, 0px 0px 10px"};
   margin-bottom:${props => !props.noBottomMargin ? "auto" : '0'};
   &:hover {
     box-shadow: 0 0 0 2px #2cf48b;

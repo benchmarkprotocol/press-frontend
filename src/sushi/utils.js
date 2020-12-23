@@ -103,6 +103,17 @@ export const getEarned = async (masterChefContract, pid, account) => {
   //return markEarned;
 }
 
+export const getMarkPerBlock = async (sushi) => {
+  //console.log("masterchef", masterChefContract, masterChefContract.methods.pendingMark )
+  if (sushi && sushi.contracts){
+     const markPerBlock = await sushi.contracts.masterChef.methods.markPerBlock().call()
+     console.log("MARK PER BLOCK", markPerBlock, new BigNumber(markPerBlock).div(new BigNumber(10).pow(9)).toNumber())
+    return new BigNumber(markPerBlock).div(new BigNumber(10).pow(9)).toNumber();
+    //console.log("MARK EARNED", markEarned)
+    //return markEarned;
+  }
+}
+
 export const getEthPriceFromUniswap = async (wethContract, usdcContract) => {
 
 
@@ -164,7 +175,7 @@ export const getTotalLPWethValue = async (
     console.log("LOADED ETH PRICE FROM UNISWAP")
   }
 
-  if (pid == 19 || pid==4){ // usdc pairs
+  if (pid == 1){ // usdc pairs
 
     ///console.log("USDC PAIR")
     const lpContractUsdc = await usdcContract.methods
@@ -315,16 +326,11 @@ export const getStaked = async (masterChefContract, pid, account) => {
 }
 
 export const redeem = async (masterChefContract, account) => {
-  let now = new Date().getTime() / 1000
-  if (now >= 1597172400) {
-    return masterChefContract.methods
-      .exit()
-      .send({ from: account })
-      .on('transactionHash', (tx) => {
-        console.log(tx)
-        return tx.transactionHash
-      })
-  } else {
-    alert('pool not active')
-  }
+  return masterChefContract.methods
+    .exit()
+    .send({ from: account })
+    .on('transactionHash', (tx) => {
+      console.log(tx)
+      return tx.transactionHash
+    })
 }

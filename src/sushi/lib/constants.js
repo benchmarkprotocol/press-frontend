@@ -43,7 +43,7 @@ export const contractAddresses = {
     1: '0x67c597624B17b16fb77959217360B7cD18284253', //mark token contract
   },
   masterChef: {
-    1: '0x6544B1cd2d28C6c53B52A1fFb8E547740e426B33', // press contract
+    1: '0x5D9972dD3Ba5602574ABeA6bF9E1713568D49903', // press contract
   },
   weth: {
     1: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
@@ -73,7 +73,7 @@ UNI-V2 LP Address on mainnet for reference
 
 export const supportedPools = [
   {
-    pid: 18,
+    pid: 0,
     lpAddresses: {
       1: '0x6f23d2fedb4ff4f1e9f8c521f66e5f2a1451b6f3',
     },
@@ -88,7 +88,7 @@ export const supportedPools = [
     tokenAddress:'0x67c597624B17b16fb77959217360B7cD18284253'
   },
   {
-    pid: 19,
+    pid: 1,
     lpAddresses: {
       1: '0x7f0ad87b99ba16e6e651120c2e230cf6928c3d15',
     },

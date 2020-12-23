@@ -215,10 +215,10 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, auth }) => {
       <Card>
         <CardContent>
           <StyledContent>
-              { (farm.name.split("-")[0]=="MARK") ? (
+              {/* (farm.name.split("-")[0]=="MARK") ? (
                   <MultiplierBadge>16x Rewards</MultiplierBadge>
                 ) : null
-              }
+              */}
 
           <Flip left>
           <div style={{position:"relative"}}>
@@ -272,8 +272,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, auth }) => {
                   ? '$'+`${farm.totalWethValue
                       .times(ethPrice)
                       .toNumber()
-                      .toLocaleString('en-US')
-                      .slice(0, -1)}`
+                      .toFixed(2)}`
                   : ' Loading ...'}
               </span>
               {/* <span>

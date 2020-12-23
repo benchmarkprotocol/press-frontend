@@ -7,8 +7,12 @@ import PageHeader from '../../components/PageHeader'
 import Spacer from '../../components/Spacer'
 import Balances from './components/Balances'
 import Countdown from 'react-countdown';
-
+import Card from '../../components/Card'
+import CardContent from '../../components/CardContent'
 import { useWallet } from 'use-wallet'
+
+const Flip = require('react-reveal/Flip');
+
 const Banner: React.FC = () => {
 
     return (
@@ -55,6 +59,25 @@ const Home: React.FC = () => {
       </div>
       <Spacer size="md" />
             <Spacer size="md" />
+
+            {(new Date() < new Date(1608847490*1000)) ?
+<StyledWrapper>
+                    <Card>
+        <Flip left>
+        <CardContent>
+        <StyledInfo>
+        <span>Deposits now open. Rewards start in:</span> <CountdownWrapper><Countdown date={new Date(1608847490*1000)} /></CountdownWrapper>
+        </StyledInfo>
+        </CardContent>
+        </Flip>
+        </Card></StyledWrapper>
+        :
+        null
+      }
+
+      <Spacer size="lg" />
+      <Spacer size="md" />
+
     </Page>
   )
 }
@@ -78,6 +101,16 @@ const StyledInfo = styled.h3`
   }
 `
 
+const StyledWrapper = styled.div`
+  align-items: center;
+  display: flex;
+  z-index:2;
+  @media (max-width: 768px) {
+    width: 100%;
+    flex-flow: column nowrap;
+    align-items: stretch;
+  }
+`
 
 
 

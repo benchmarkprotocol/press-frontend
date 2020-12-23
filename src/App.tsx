@@ -49,7 +49,7 @@ const App: React.FC = () => {
         <br/><br/>
           <Logo/>
           <br/>
-          <p style={{color:"#fff", textAlign:"center", maxWidth:"80%", margin:"0 auto"}}>Please load the launchpad on desktop to stake the LP tokens below and earn MARK.</p>
+          <p style={{color:"#fff", textAlign:"center", maxWidth:"80%", margin:"0 auto"}}>Please load The Press on desktop to stake the LP tokens below and earn MARK.</p>
           <br/><br/>
           <FarmMenus auth={false} noWidth={true}/>
         </ShowMobile>

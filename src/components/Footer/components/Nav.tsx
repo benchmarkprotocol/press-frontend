@@ -12,7 +12,7 @@ const Nav: React.FC = () => {
     <StyledNav>
       <StyledLink
         target="_blank"
-        href="https://etherscan.io/address/0x6544b1cd2d28c6c53b52a1ffb8e547740e426b33#code"
+        href="https://etherscan.io/address/0x5D9972dD3Ba5602574ABeA6bF9E1713568D49903#code"
       >
         <img src={etherscan} style={{maxHeight:24, marginRight:6}}/>
         <span style={{verticalAlign:'top'}}>The Press Contract</span>
@@ -68,6 +68,7 @@ const StyledLink = styled.a`
   padding-left: ${(props) => props.theme.spacing[3]}px;
   padding-right: ${(props) => props.theme.spacing[3]}px;
   text-decoration: none;
+  text-shadow: 0 0 3px #000, 0 0 6px #000, 0 0 6px #000, 0 0 16px #000;
   &:hover {
     transform: scale(1.15);
     color: ${(props) => props.theme.color.grey[500]};
