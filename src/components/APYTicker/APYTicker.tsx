@@ -21,7 +21,7 @@ import { getEarned, getMasterChefContract } from '../../sushi/utils'
 import { bnToDec } from '../../utils'
 import markIcon from '../../assets/img/mark.png'
 import { NavLink } from 'react-router-dom'
-
+import useMarkPerBlock from '../../hooks/useMarkPerBlock'
 
 interface FarmWithStakedValue extends Farm, StakedValue {
   apy: BigNumber,
@@ -57,8 +57,11 @@ const APYTicker: React.FC<FarmMenusProps>  = ({auth, noWidth}) => {
 
   //console.log("MARK PRICE", sushiPrice.toString(), stakedValue[sushiIndex], sushiIndex, farms[sushiIndex])
 
+  const sushi = useSushi()
+  const markPerBlock = useMarkPerBlock(sushi);
+
   const BLOCKS_PER_YEAR = new BigNumber(2336000)
-  const SUSHI_PER_BLOCK = new BigNumber(34.16666)
+  const SUSHI_PER_BLOCK = new BigNumber(markPerBlock || 0.5)
 
   const rows = farms.map((farm, i)=> {
       const farmWithStakedValue = {

@@ -20,6 +20,7 @@ import useStakedBalance from '../../../hooks/useStakedBalance'
 import { getEarned, getMasterChefContract } from '../../../sushi/utils'
 import { bnToDec } from '../../../utils'
 import markIcon from '../../assets/img/mark.png'
+import useMarkPerBlock from '../../../hooks/useMarkPerBlock'
 const Flip = require('react-reveal/Flip');
 
 interface FarmWithStakedValue extends Farm, StakedValue {
@@ -36,7 +37,8 @@ const FarmCards: React.FC<FarmCardsProps>  = ({auth}) => {
   const { account } = useWallet()
   const ethPrice = useEthPrice()
   const stakedValue = useAllStakedValue()
-
+  const sushi = useSushi()
+  const markPerBlock = useMarkPerBlock(sushi);
   if (auth){
     //console.log("STAKED VALUE ALL", stakedValue)
 
@@ -54,8 +56,9 @@ const FarmCards: React.FC<FarmCardsProps>  = ({auth}) => {
 
     //console.log("MARK PRICE", sushiPrice.toString(), stakedValue[sushiIndex], sushiIndex, farms[sushiIndex])
 
+
     const BLOCKS_PER_YEAR = new BigNumber(2336000)
-    const SUSHI_PER_BLOCK = new BigNumber(34.16666)
+    const SUSHI_PER_BLOCK = new BigNumber(markPerBlock || 0.5)
 
     const rows = farms.reduce<FarmWithStakedValue[][]>(
       (farmRows, farm, i) => {
