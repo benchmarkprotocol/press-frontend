@@ -21,7 +21,7 @@ const StyledFooterInner = styled.div`
   display: flex;
   justify-content: center;
   padding-bottom:20px;
-  max-width: ${props => props.theme.siteWidth}px;
+  max-width: 1300px;
   width: 100%;
 `
 

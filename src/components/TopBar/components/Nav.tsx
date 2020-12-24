@@ -12,6 +12,18 @@ const Nav: React.FC = () => {
         Pools
       </StyledLink>
       <StyledAbsoluteLink
+        href="https://launchpad.benchmarkprotocol.finance"
+        target="_blank"
+      >
+        Launchpad
+      </StyledAbsoluteLink>
+      <StyledAbsoluteLink
+        href="https://www.youtube.com/watch?v=tQwuzCA8rYE"
+        target="_blank"
+      >
+        Video Tutorial
+      </StyledAbsoluteLink>
+      <StyledAbsoluteLink
         href="https://medium.com/benchmarkprotocol/transitioning-from-benchmark-launchpad-to-the-press-80e480ee4bc7"
         target="_blank"
       >

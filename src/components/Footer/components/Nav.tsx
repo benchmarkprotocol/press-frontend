@@ -7,6 +7,7 @@ import discord from '../../../assets/img/discord.png'
 import twitter from '../../../assets/img/twitter.png'
 import benchmark from '../../../assets/img/icon.png'
 import coingecko from '../../../assets/img/coingecko.png'
+import telegram from '../../../assets/img/telegram.png'
 const Nav: React.FC = () => {
   return (
     <StyledNav>
@@ -45,6 +46,10 @@ const Nav: React.FC = () => {
       <StyledLink target="_blank" href="https://discord.gg/HcxAEaHG3X">
       <img src={discord} style={{maxHeight:24, marginRight:6}}/>
         <span style={{verticalAlign:'top'}}>Discord</span>
+      </StyledLink>
+      <StyledLink target="_blank" href="https://t.me/joinchat/Tt7sw00qqNnEWLIOzmYQ_w">
+      <img src={telegram} style={{maxHeight:24, marginRight:6}}/>
+        <span style={{verticalAlign:'top'}}>Telegram</span>
       </StyledLink>
       <StyledLink target="_blank" href="https://twitter.com/Benchmark_DeFi">
       <img src={twitter} style={{maxHeight:24, marginRight:6}}/>

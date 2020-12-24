@@ -240,11 +240,12 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, auth }) => {
               <span>APY</span>
               <span>
                 {(farm.apy && farm.apy.toNumber()==Infinity) ? '999,999,999,999%': (farm.apy && isNaN(farm.apy.toNumber())) ? '999,999,999,999%' : farm.apy
-                  ? `${farm.apy
+                  ? `${parseFloat(farm.apy
                       .times(new BigNumber(100))
                       .toNumber()
+                      .toFixed(2))
                       .toLocaleString('en-US')
-                      .slice(0, -1)}%`
+                      }%`
                   : ' Loading ...'}
               </span>
               {/* <span>
@@ -269,10 +270,12 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, auth }) => {
               <span>Pool Value</span>
               <span>
                 {(farm.totalWethValue && farm.totalWethValue.toNumber()==0) ? '$0.00': farm.totalWethValue 
-                  ? '$'+`${farm.totalWethValue
+                  ? '$'+`${parseFloat(farm.totalWethValue
                       .times(ethPrice)
                       .toNumber()
-                      .toFixed(2)}`
+                      .toFixed(2))
+                      .toLocaleString('en-US')
+                      }`
                   : ' Loading ...'}
               </span>
               {/* <span>
