@@ -72,6 +72,7 @@ const StyledSubtitle = styled.h3`
   margin: 0;
   padding: 0;
   text-align: center;
+      text-shadow: 0 0 3px #000, 0 0 6px #000, 0 0 6px #000, 0 0 16px #000;
 `
 
 export default PageHeader

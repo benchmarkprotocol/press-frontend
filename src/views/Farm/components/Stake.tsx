@@ -112,7 +112,9 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, name }) => {
 
               </>
             )}
+
           </StyledCardActions>
+          <p style={{color:"#fff", paddingTop:10,paddingBottom:0, marginBottom:0, textAlign:'center'}}>Staking or unstaking LP tokens will automatically claim all MARK.</p>
         </StyledCardContentInner>
       </CardContent>
   )
