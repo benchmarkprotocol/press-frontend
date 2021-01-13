@@ -40,6 +40,8 @@ export const getBalance = async (
       .call()
     return balance
   } catch (e) {
+    console.log("ERR", e)
     return '0'
   }
 }
+

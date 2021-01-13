@@ -41,15 +41,22 @@ export const addressMap = {
 export const contractAddresses = {
   sushi: {
     1: '0x67c597624B17b16fb77959217360B7cD18284253', //mark token contract
+    4: '0xbCcab055f32F0EA412cbd3de598E19d33c50BdC3',
   },
   masterChef: {
     1: '0x5D9972dD3Ba5602574ABeA6bF9E1713568D49903', // press contract
   },
+  xmark:{
+    1:"0x36b679bd64Ed73DBfd88909cDCB892cB66Bd4CBb",
+    4:"0xa00731DE69ECE9a1B4116A4D6595af42611caCFB",
+  },
   weth: {
     1: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+    4: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
   },
   usdc:{
     1: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+    4: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
   }
 }
 
@@ -100,6 +107,24 @@ export const supportedPools = [
     tokenSymbol: 'MARK',
     icon: 'MARK',
     lpAddress: '0x7f0ad87b99ba16e6e651120c2e230cf6928c3d15',
+    tokenAddress:'0x67c597624B17b16fb77959217360B7cD18284253'
+  },
+]
+
+export const supportedStaking = [
+  {
+    pid: 0,
+    lpAddresses: {
+      1: '0x6f23d2fedb4ff4f1e9f8c521f66e5f2a1451b6f3',
+    },
+    tokenAddresses: {
+      1: '0x67c597624B17b16fb77959217360B7cD18284253',
+    },
+    name: 'MARK',
+    symbol: 'MARK',
+    tokenSymbol: 'MARK',
+    icon: 'MARK',
+    lpAddress: '0x6f23d2fedb4ff4f1e9f8c521f66e5f2a1451b6f3',
     tokenAddress:'0x67c597624B17b16fb77959217360B7cD18284253'
   },
 ]

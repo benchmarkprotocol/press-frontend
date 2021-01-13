@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
-import { supportedPools } from './lib/constants'
+import { supportedPools, supportedStaking } from './lib/constants'
 
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
@@ -20,6 +20,9 @@ export const getMasterChefAddress = (sushi) => {
 export const getSushiAddress = (sushi) => {
   return sushi && sushi.sushiAddress
 }
+export const getXMARKAddress = (sushi) => {
+  return sushi && sushi.xmarkAddress
+}
 export const getWethContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.weth
 }
@@ -29,12 +32,15 @@ export const getUsdcContract = (sushi) => {
 export const getMasterChefContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.masterChef
 }
+export const getXMARKContract = (sushi) => {
+  return sushi && sushi.contracts && sushi.contracts.xmark
+}
 export const getSushiContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.sushi
 }
 
 export const getFarms = (sushi) => {
-  //console.log("SUPPORT POOLS", supportedPools)
+  console.log("SUPPORT POOLS", supportedPools)
   return sushi
     ? sushi.contracts.pools.map(
         ({
@@ -87,6 +93,62 @@ export const getFarms = (sushi) => {
         }),
       )
 }
+
+export const getStaking = (sushi) => {
+  console.log("SUPPORT staking POOLS", supportedPools)
+  return sushi
+    ? sushi.contracts.staking.map(
+        ({
+          pid,
+          name,
+          symbol,
+          icon,
+          tokenAddress,
+          tokenSymbol,
+          tokenContract,
+          lpAddress,
+          lpContract,
+        }) => ({
+          pid,
+          id: symbol,
+          name,
+          lpToken: symbol,
+          lpTokenAddress: lpAddress,
+          lpContract,
+          tokenAddress,
+          tokenSymbol,
+          tokenContract,
+          earnToken: 'MARK',
+          earnTokenAddress: sushi.contracts.sushi.options.address,
+          icon,
+        }),
+      )
+    : supportedStaking.map(({
+          pid,
+          name,
+          symbol,
+          icon,
+          tokenAddress,
+          tokenSymbol,
+          tokenContract,
+          lpAddress,
+          lpContract,
+        }) => ({
+          pid,
+          id: symbol,
+          name,
+          lpToken: symbol,
+          lpTokenAddress: lpAddress,
+          lpContract,
+          tokenAddress,
+          tokenSymbol,
+          tokenContract,
+          earnToken: 'MARK',
+          icon,
+        }),
+      )
+}
+
 
 export const getPoolWeight = async (masterChefContract, pid) => {
   const { allocPoint } = await masterChefContract.methods.poolInfo(pid).call()
@@ -257,6 +319,12 @@ export const approve = async (lpContract, masterChefContract, account) => {
     .send({ from: account })
 }
 
+export const approveXMARK = async (lpContract, masterChefContract, account) => {
+  return lpContract.methods
+    .approve(masterChefContract.options.address, ethers.constants.MaxUint256)
+    .send({ from: account })
+}
+
 export const getSushiSupply = async (sushi) => {
   //console.log("SUSHI CONTARCT", sushi.contracts.sushi)
   let totalSupply = await sushi.contracts.sushi.methods.totalSupply().call();
@@ -334,3 +402,102 @@ export const redeem = async (masterChefContract, account) => {
       return tx.transactionHash
     })
 }
+
+
+export const getXMARKBalance = async (xMarkContract, account) => {
+  try {
+    const amount = await xMarkContract.methods
+      .balanceOf(account)
+      .call()
+      console.log("AMOUNT ", amount, xMarkContract, account)
+    return new BigNumber(amount).toString()
+  } catch {
+    return new BigNumber(0).toString()
+  }
+}
+
+export const getXMARKStaked = getXMARKBalance;
+export const enterXMARK = async (xMarkContract, amount, account) => {
+
+  return xMarkContract.methods
+    .enter(
+      new BigNumber(amount).times(new BigNumber(10).pow(9)).toString(),
+    )
+    .send({ from: account })
+    .on('transactionHash', (tx) => {
+      console.log(tx)
+      return tx.transactionHash
+    })
+}
+export const leaveXMARK = async (xMarkContract, amount, account) => {
+  return xMarkContract.methods
+    .leave(
+      new BigNumber(amount).times(new BigNumber(10).pow(9)).toString(),
+    )
+    .send({ from: account })
+    .on('transactionHash', (tx) => {
+      console.log(tx)
+      return tx.transactionHash
+    })
+}
+
+
+export const getXMARKRewards = async (xMarkContract, sushiContract, account) => {
+  const myXMARKBalance = await getXMARKBalance(xMarkContract, account);
+  const totalSupplyXMARK = await xMarkContract.methods.totalSupply().call();
+  const XMARKBalanceOfMARK = await sushiContract.methods.balanceOf(xMarkContract._address).call();
+  const totalRewards = (XMARKBalanceOfMARK)// - totalSupplyXMARK
+  const shareOfRewards = myXMARKBalance/totalSupplyXMARK
+  const myRewards = (shareOfRewards * totalRewards)
+  console.log(myXMARKBalance, totalSupplyXMARK, XMARKBalanceOfMARK, totalRewards, shareOfRewards, myRewards, xMarkContract.address)
+  return myRewards
+}
+
+
+export const getMARKPriceFromUniswap = async (markContract, usdcContract) => {
+
+
+  const lpContractMARK = await markContract.methods
+    .balanceOf("0x7f0ad87b99ba16e6e651120c2e230cf6928c3d15")
+    .call()
+
+      const lpContractUsdc = await usdcContract.methods
+      .balanceOf("0x7f0ad87b99ba16e6e651120c2e230cf6928c3d15")
+      .call()
+
+      const markAmount = new BigNumber(lpContractMARK).div(new BigNumber(10).pow(9)).toNumber()
+
+      const usdcAmount = new BigNumber(lpContractUsdc).div(new BigNumber(10).pow(6)).toNumber()
+
+      const markPrice = parseFloat((usdcAmount/markAmount).toFixed(2))
+
+      //console.log("ETH PRICE?", (usdcAmount/wethAmount), wethAmount, usdcAmount )
+
+      return markPrice;
+}
+
+export const getXMARKAPY = async (xMarkContract, sushiContract, usdcContract, account, sushi) => {
+  const markPerBlock = await getMarkPerBlock(sushi);
+  const rewardsPerDay = new BigNumber(6500 * 1000000000 * markPerBlock * 0.1);
+  const businessDaysPerYear = new BigNumber(252);
+  const myXMARKBalance = await getXMARKBalance(xMarkContract, account);
+  const totalSupplyXMARK = await xMarkContract.methods.totalSupply().call();
+  const shareOfRewards = myXMARKBalance/totalSupplyXMARK
+  const markPrice = await getMARKPriceFromUniswap(sushiContract, usdcContract);
+  //const rewardValue = (rewardsPerDay*businessDaysPerYear)*shareOfRewards*markPrice
+  //const startingValue = (rewardsPerDay*businessDaysPerYear)*shareOfRewards*markPrice
+  console.log("MARK PRICE", markPrice)
+  const apy = new BigNumber(markPrice).times(rewardsPerDay.times(businessDaysPerYear)).div(new BigNumber(markPrice).times(totalSupplyXMARK))
+  return apy
+}
+
+export const getMarkStakedValue = async (xMarkContract, sushiContract, usdcContract) => {
+  const XMARKBalanceOfMARK = await sushiContract.methods.balanceOf(xMarkContract._address).call();
+  const markPrice = await getMARKPriceFromUniswap(sushiContract, usdcContract);
+  console.log("GET STAKED VALUE", XMARKBalanceOfMARK, new BigNumber(XMARKBalanceOfMARK).div(new BigNumber(10).pow(9)).toNumber(), markPrice)
+  return (new BigNumber(XMARKBalanceOfMARK).div(new BigNumber(10).pow(9)).toNumber()) * markPrice;
+}
+
+
+
+

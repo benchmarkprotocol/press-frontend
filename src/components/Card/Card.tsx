@@ -3,10 +3,11 @@ import styled from 'styled-components'
 
 
 interface CardProps {
-  noglow?: Boolean
+  noglow?: Boolean,
+  verticalCenter?: Boolean,
 }
 
-const Card: React.FC<CardProps> = ({ children, noglow }) => (!noglow ? <StyledCard>{children}</StyledCard> : <StyledCardNoGlow>{children}</StyledCardNoGlow>)
+const Card: React.FC<CardProps> = ({ children, noglow, verticalCenter }) => (!noglow ? (verticalCenter ? <StyledCardVertical>{children}</StyledCardVertical> : <StyledCard>{children}</StyledCard>) : <StyledCardNoGlow>{children}</StyledCardNoGlow>)
 
 const StyledCard = styled.div`
   background: ${(props) => props.theme.color.dark[200]};
@@ -17,6 +18,18 @@ const StyledCard = styled.div`
   flex-direction: column;
   &:hover{
   	    box-shadow: 0 0 2rem #2CF48B;
+  }
+`
+const StyledCardVertical = styled.div`
+  justify-content: center;
+  background: ${(props) => props.theme.color.dark[200]};
+  border: 1px solid ${(props) => props.theme.color.dark[100]}ff;
+  border-radius: 12px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  &:hover{
+        box-shadow: 0 0 2rem #2CF48B;
   }
 `
 const StyledCardNoGlow = styled.div`

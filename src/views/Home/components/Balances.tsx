@@ -20,6 +20,7 @@ import { getBalanceNumber } from '../../../utils/formatBalance'
 import markIcon from '../../assets/img/mark.png'
 import Countdown from 'react-countdown';
 import useEthPrice from '../../../hooks/useEthPrice'
+import useAllMARKStakedValue from '../../../hooks/useAllMARKStakedValue'
 
 const Flip = require('react-reveal/Flip');
 
@@ -27,6 +28,8 @@ const PendingRewards: React.FC = () => {
   const [start, setStart] = useState(0)
   const [end, setEnd] = useState(0)
   const [scale, setScale] = useState(1)
+
+
 
   const allEarnings = useAllEarnings()
   let sumEarning = 0
@@ -83,7 +86,8 @@ const Balances: React.FC = () => {
   const sushi = useSushi()
   const allStakedValue = useAllStakedValue()
 
-
+  const allMARKStakedValue = useAllMARKStakedValue();
+  console.log("STAKED VALUE", allMARKStakedValue)
   const ethPrice = useEthPrice()
   console.log("ETH PRICE IMPORTED", ethPrice)
   const sushiBalance = useTokenBalance(getSushiAddress(sushi))
@@ -99,11 +103,13 @@ const Balances: React.FC = () => {
   const [farms] = useFarms()
 
 
-  const sumWeth = farms.reduce(
+  var sumWeth = farms.reduce(
     (c, { id }, i) => (allStakedValue[i] && allStakedValue[i].totalWethValue) ? (c + (allStakedValue[i].totalWethValue.toNumber() || 0)) : 0,
     0,
   )
-  //console.log("GOT SUM WETH", sumWeth)
+
+
+  console.log("GOT SUM WETH", (ethPrice * sumWeth))
 
   //console.log("sumWeth", sumWeth)
 
@@ -166,12 +172,12 @@ const Balances: React.FC = () => {
         <CardContent>
           <Label text="Total Value Locked" />
           <Value
-            value={((!!account && !!sumWeth) && (ethPrice && (sumWeth || sumWeth===0))) ? "$" + (ethPrice * sumWeth).toLocaleString('en-US', {maximumFractionDigits:2})  : (!!account) ? "Loading...": "Connect Wallet 🦊"}
+            value={((!!account && !!sumWeth) && (ethPrice && (sumWeth || sumWeth===0))) ? "$" + ((ethPrice * sumWeth)+ allMARKStakedValue).toLocaleString('en-US', {maximumFractionDigits:2})  : (!!account) ? "Loading...": "Connect Wallet 🦊"}
           />
         </CardContent>
         <Footnote>
           Active Pools
-          <FootnoteValue>{farms.length}</FootnoteValue>
+          <FootnoteValue>{(farms.length+1)}</FootnoteValue>
         </Footnote>
         </Flip>
       </Card>
