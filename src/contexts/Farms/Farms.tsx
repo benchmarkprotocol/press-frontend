@@ -17,7 +17,6 @@ const Farms: React.FC = ({ children }) => {
   //const { account } = useWallet()
 
   const farms = getFarms(sushi)
-
   return (
     <Context.Provider
       value={{

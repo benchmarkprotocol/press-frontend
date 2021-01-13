@@ -4,10 +4,12 @@ import MasterChefAbi from './abi/masterchef.json'
 import SushiAbi from './abi/sushi.json'
 import UNIV2PairAbi from './abi/uni_v2_lp.json'
 import WETHAbi from './abi/weth.json'
+import xMARKAbi from './abi/xmark.json'
 import {
   contractAddresses,
   SUBTRACT_GAS_LIMIT,
   supportedPools,
+  supportedStaking,
 } from './constants.js'
 import * as Types from './types.js'
 
@@ -25,6 +27,7 @@ export class Contracts {
     this.masterChef = new this.web3.eth.Contract(MasterChefAbi)
     this.weth = new this.web3.eth.Contract(WETHAbi)
     this.usdc = new this.web3.eth.Contract(ERC20Abi)
+    this.xmark = new this.web3.eth.Contract(xMARKAbi)
 
     this.pools = supportedPools.map((pool) =>
       Object.assign(pool, {
@@ -34,7 +37,14 @@ export class Contracts {
         tokenContract: new this.web3.eth.Contract(ERC20Abi),
       }),
     )
-
+    this.staking = supportedStaking.map((pool) =>
+      Object.assign(pool, {
+        lpAddress: pool.lpAddresses[networkId],
+        tokenAddress: pool.tokenAddresses[networkId],
+        lpContract: new this.web3.eth.Contract(UNIV2PairAbi),
+        tokenContract: new this.web3.eth.Contract(ERC20Abi),
+      }),
+    )
     this.setProvider(provider, networkId)
     this.setDefaultAccount(this.web3.eth.defaultAccount)
   }
@@ -52,6 +62,7 @@ export class Contracts {
     setProvider(this.masterChef, contractAddresses.masterChef[networkId])
     setProvider(this.weth, contractAddresses.weth[networkId])
     setProvider(this.usdc, contractAddresses.usdc[networkId])
+    setProvider(this.xmark, contractAddresses.xmark[networkId])
 
     this.pools.forEach(
       ({ lpContract, lpAddress, tokenContract, tokenAddress }) => {

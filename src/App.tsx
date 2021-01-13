@@ -7,12 +7,14 @@ import DisclaimerModal from './components/DisclaimerModal'
 import MobileMenu from './components/MobileMenu'
 import TopBar from './components/TopBar'
 import FarmsProvider from './contexts/Farms'
+import StakingProvider from './contexts/Staking'
 import ModalsProvider from './contexts/Modals'
 import TransactionProvider from './contexts/Transactions'
 import SushiProvider from './contexts/SushiProvider'
 import useModal from './hooks/useModal'
 import theme from './theme'
 import Farms from './views/Farms'
+import StakeBox from './views/StakeBox'
 import Home from './views/Home'
 import FarmMenus from './views/Farms/components/FarmMenus'
 import Logo from './components/Logo'
@@ -43,6 +45,11 @@ const App: React.FC = () => {
           <Route path="/pools">
             <Farms />
           </Route>
+
+          <Route path="/stake">
+            <StakeBox/>
+          </Route>
+
         </Switch>
         </ShowDesktop>
         <ShowMobile>
@@ -89,9 +96,10 @@ const Providers: React.FC = ({ children }) => {
         <APYProvider>
           <TransactionProvider>
             <FarmsProvider>
+              <StakingProvider>
              
                 <ModalsProvider>{children}</ModalsProvider>
-              
+              </StakingProvider>
             </FarmsProvider>
           </TransactionProvider>
           </APYProvider>
