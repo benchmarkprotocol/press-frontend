@@ -38,7 +38,11 @@ const FarmMenus: React.FC<FarmMenusProps>  = ({auth, noWidth}) => {
                   <NavLink to={`/pools/${farm.id}`}>
                   <StyledIconGrowingContainer>
                     <Rotate><img src={require(`./../../../assets/img/${farm.icon}.png`)} style={{width:50, height:50, marginLeft:15, marginRight:15, marginBottom:12}}/></Rotate>
-                    <img src={require(`./../../../assets/img/${farm.name.split("-")[1]}.png`)} style={{width:30, height:30, margin:8, position:"absolute", bottom:0, right:-10}}/>
+                    {farm.name.split("-")[0] == "WBTC" ?
+                      <img src={require(`./../../../assets/img/${farm.name.split("-")[0]}.png`)} style={{width:30, height:30, margin:8, position:"absolute", bottom:0, right:-10}}/>
+                      :
+                      <img src={require(`./../../../assets/img/${farm.name.split("-")[1]}.png`)} style={{width:30, height:30, margin:8, position:"absolute", bottom:0, right:-10}}/>
+                    }
                     </StyledIconGrowingContainer>
                   </NavLink>
                 </React.Fragment>
@@ -55,7 +59,11 @@ const FarmMenus: React.FC<FarmMenusProps>  = ({auth, noWidth}) => {
                 <React.Fragment key={i}>
                 <StyledIconDisabledContainer>
                     <Rotate><img src={require(`./../../../assets/img/${farm.icon}.png`)} style={{width:50, height:50, marginLeft:15, marginRight:15, marginBottom:12}}/></Rotate>
-                    <img src={require(`./../../../assets/img/${farm.name.split("-")[1]}.png`)} style={{width:30, height:30, margin:8, position:"absolute", bottom:0, right:-10}}/>
+                    {farm.name.split("-")[0] == "WBTC" ? 
+                      <img src={require(`./../../../assets/img/${farm.name.split("-")[0]}.png`)} style={{width:30, height:30, margin:8, position:"absolute", bottom:0, right:-10}}/>
+                      :
+                      <img src={require(`./../../../assets/img/${farm.name.split("-")[1]}.png`)} style={{width:30, height:30, margin:8, position:"absolute", bottom:0, right:-10}}/>
+                    }
                     </StyledIconDisabledContainer>
                 </React.Fragment>
             ))

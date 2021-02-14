@@ -45,6 +45,7 @@ export const contractAddresses = {
   },
   masterChef: {
     1: '0x5D9972dD3Ba5602574ABeA6bF9E1713568D49903', // press contract
+    4: '0x5D9972dD3Ba5602574ABeA6bF9E1713568D49903', // press contract
   },
   xmark:{
     1:"0x36b679bd64Ed73DBfd88909cDCB892cB66Bd4CBb",
@@ -57,6 +58,9 @@ export const contractAddresses = {
   usdc:{
     1: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
     4: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+  },
+  wbtc:{
+    1:'0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
   }
 }
 
@@ -109,6 +113,22 @@ export const supportedPools = [
     lpAddress: '0x7f0ad87b99ba16e6e651120c2e230cf6928c3d15',
     tokenAddress:'0x67c597624B17b16fb77959217360B7cD18284253'
   },
+  {
+    pid:2,
+    lpAddresses:{
+      1: '0x36cD8c1A21b0b7d86A26cE1221f5a48b80FE27c4',
+    },
+    tokenAddresses: {
+      1: '0x67c597624B17b16fb77959217360B7cD18284253',
+    },
+    name: 'WBTC-MARK',
+    symbol: 'WBTC-MARK UNI-V2 LP',
+    tokenSymbol: 'MARK',
+    icon: 'MARK',
+    lpAddress: '0x36cD8c1A21b0b7d86A26cE1221f5a48b80FE27c4',
+    tokenAddress:'0x67c597624B17b16fb77959217360B7cD18284253'
+
+  }
 ]
 
 export const supportedStaking = [

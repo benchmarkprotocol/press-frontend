@@ -28,6 +28,7 @@ export class Contracts {
     this.weth = new this.web3.eth.Contract(WETHAbi)
     this.usdc = new this.web3.eth.Contract(ERC20Abi)
     this.xmark = new this.web3.eth.Contract(xMARKAbi)
+    this.wbtc = new this.web3.eth.Contract(ERC20Abi)
 
     this.pools = supportedPools.map((pool) =>
       Object.assign(pool, {
@@ -63,6 +64,7 @@ export class Contracts {
     setProvider(this.weth, contractAddresses.weth[networkId])
     setProvider(this.usdc, contractAddresses.usdc[networkId])
     setProvider(this.xmark, contractAddresses.xmark[networkId])
+    setProvider(this.wbtc, contractAddresses.wbtc[networkId])
 
     this.pools.forEach(
       ({ lpContract, lpAddress, tokenContract, tokenAddress }) => {

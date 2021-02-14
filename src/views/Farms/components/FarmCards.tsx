@@ -226,7 +226,12 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, auth }) => {
           <Flip left>
           <div style={{position:"relative"}}>
             <img src={require(`./../../../assets/img/${farm.icon}.png`)} style={{width:50, height:50, margin:8}}/>
-            <img src={require(`./../../../assets/img/${farm.name.split("-")[1]}.png`)} style={{width:30, height:30, margin:8, position:"absolute", bottom:0, right:-15}}/>
+            {farm.name.split("-")[0] == "WBTC" ?
+                <img src={require(`./../../../assets/img/${farm.name.split("-")[0]}.png`)} style={{width:30, height:30, margin:8, position:"absolute", bottom:0, right:-15}}/>
+              :
+                <img src={require(`./../../../assets/img/${farm.name.split("-")[1]}.png`)} style={{width:30, height:30, margin:8, position:"absolute", bottom:0, right:-15}}/>
+            }
+            
             </div></Flip>
             <Flip left><StyledTitle>{farm.name}</StyledTitle></Flip>
             <a href={`https://info.uniswap.org/pair/${farm.lpTokenAddress}`} target="_blank"><img src={require(`./../../../assets/img/info.png`)} style={{width:25, height:25, top:10, right:10, position:"absolute"}}/></a>
@@ -398,7 +403,7 @@ const StyledCardAccent = styled.div`
 
 const StyledCards = styled.div`
   width: 900px;
-  padding-left: 228px;
+  padding-left: 114px;
   @media (max-width: 768px) {
     width: 100%;
   }

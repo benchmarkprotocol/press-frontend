@@ -74,10 +74,18 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, name }) => {
       <CardContent>
         <StyledCardContentInner>
           <StyledCardHeader>
-            <div style={{ position:"relative"}}>
-              <img src={require(`./../../../assets/img/${name.split("-")[0]}.png`)} style={{width:50, height:50, marginLeft:15, marginRight:15, marginBottom:12}}/>
-              <img src={require(`./../../../assets/img/${name.split("-")[1]}.png`)} style={{width:30, height:30, margin:8, position:"absolute", bottom:0, right:-10}}/>
-            </div>
+
+            { name.split("-")[0] == "WBTC" ?
+              <div style={{ position:"relative"}}>
+                <img src={require(`./../../../assets/img/${name.split("-")[1]}.png`)} style={{width:50, height:50, marginLeft:15, marginRight:15, marginBottom:12}}/>
+                <img src={require(`./../../../assets/img/${name.split("-")[0]}.png`)} style={{width:30, height:30, margin:8, position:"absolute", bottom:0, right:-10}}/>
+              </div>
+              :
+              <div style={{ position:"relative"}}>
+                <img src={require(`./../../../assets/img/${name.split("-")[0]}.png`)} style={{width:50, height:50, marginLeft:15, marginRight:15, marginBottom:12}}/>
+                <img src={require(`./../../../assets/img/${name.split("-")[1]}.png`)} style={{width:30, height:30, margin:8, position:"absolute", bottom:0, right:-10}}/>
+              </div>
+            }
             <StyledActionSpacer />
             <Value value={getBalanceNumber(stakedBalance, 18)} decimals={18}/>
             <StyledActionSpacer/>

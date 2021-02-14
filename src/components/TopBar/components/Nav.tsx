@@ -55,6 +55,21 @@ const Nav: React.FC = () => {
             >
              Governance
             </StyledAbsoluteLinkMenu>
+
+            <StyledAbsoluteLinkMenu
+              href="https://benchmarkprotocol.finance/terms"
+              target="_blank"
+            >
+             Terms
+            </StyledAbsoluteLinkMenu>
+
+            <StyledAbsoluteLinkMenu
+              href="https://benchmarkprotocol.finance/privacy"
+              target="_blank"
+            >
+             Privacy Policy
+            </StyledAbsoluteLinkMenu>
+
           </Dropdown>
           : null
         }

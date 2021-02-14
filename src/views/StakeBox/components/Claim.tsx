@@ -16,6 +16,7 @@ import useModal from '../../../hooks/useModal'
 import useXMARKStake from '../../../hooks/useXMARKStake'
 import useXMARKRewards from '../../../hooks/useXMARKRewards'
 import useXMARKAPY from '../../../hooks/useXMARKAPY'
+import useXMARKValue from '../../../hooks/useXMARKValue'
 import useXMARKStakedBalance from '../../../hooks/useXMARKStakedBalance'
 import useTokenBalance from '../../../hooks/useTokenBalance'
 import useXMARKUnstake from '../../../hooks/useXMARKUnstake'
@@ -24,6 +25,7 @@ import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
 import {getXMARKAddress} from "../../../sushi/utils"
 import useSushi from '../../../hooks/useSushi'
+import useAllMARKStakedValue from '../../../hooks/useAllMARKStakedValue'
 
 interface StakeProps {
   lpContract: Contract
@@ -49,6 +51,10 @@ const Claim: React.FC<StakeProps> = ({ lpContract, pid, tokenName, name }) => {
   const rewards = useXMARKRewards();
 
   const apy = useXMARKAPY()
+
+  const XMARKValue = useXMARKValue();
+
+  const allMARKStakedValue = useAllMARKStakedValue();
 
   console.log("claim", address, tokenBalance.toNumber(), rewards, apy)
 
@@ -111,7 +117,12 @@ const Claim: React.FC<StakeProps> = ({ lpContract, pid, tokenName, name }) => {
               <StyledActionSpacer/>
               <APYText> Estimated Return </APYText>
             </APYContainer>
-
+            <APYContainer>
+              <APYText> 1 xMARK = {XMARKValue ? XMARKValue.toFixed(4) : "0.000"} MARK</APYText>
+            </APYContainer>
+            <APYContainer>
+              <APYText> ${(allMARKStakedValue).toLocaleString('en-US', {maximumFractionDigits:2})} TVL</APYText>
+            </APYContainer>
 
 
           </StyledCardHeader>
