@@ -159,8 +159,9 @@ const Balances: React.FC = () => {
           />
         </CardContent>
         <Footnote>
-          MARK per block
-          <FootnoteValue>{(!!account && sushi && markPerBlock) ? markPerBlock : '---'}</FootnoteValue>
+        {(!!account) ? "Wallet Connected": "Wallet Disconnected"}
+          {/*MARK per block
+          <FootnoteValue>{(!!account && sushi && markPerBlock) ? markPerBlock : '---'}</FootnoteValue>*/}
         </Footnote>
         </Flip>
       </Card>

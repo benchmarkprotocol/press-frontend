@@ -8,6 +8,7 @@ import { Contract } from 'web3-eth-contract'
 import {
   getMasterChefContract,
   getWethContract,
+  getWbtcContract,
   getFarms,
   getTotalLPWethValue,
   getUsdcContract
@@ -32,6 +33,7 @@ const useAllStakedValue = () => {
   const masterChefContract = getMasterChefContract(sushi)
   const wethContact = getWethContract(sushi)
   const usdcContact = getUsdcContract(sushi)
+  const wbtcContact = getWbtcContract(sushi)
   const block = useBlock()
   const ethPrice = useEthPrice();
 
@@ -51,6 +53,7 @@ const useAllStakedValue = () => {
             masterChefContract,
             wethContact,
             usdcContact,
+            wbtcContact,
             ethPrice,
             lpContract,
             tokenContract,

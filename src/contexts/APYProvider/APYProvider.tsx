@@ -50,6 +50,7 @@ const web3 = new Web3(new Web3.providers.HttpProvider("https://mainnet.eth.arago
   const masterChefContract = new web3.eth.Contract(MasterChefAbi, contractAddresses.masterChef[1]);
   const wethContract = new web3.eth.Contract(WETHAbi, contractAddresses.weth[1]);
   const usdcContract = new web3.eth.Contract(ERC20Abi, contractAddresses.usdc[1]);
+  const wbtcContract = new web3.eth.Contract(ERC20Abi, contractAddresses.wbtc[1]);
 
 const APYProvider: React.FC = ({ children }) => {
 
@@ -87,6 +88,7 @@ const APYProvider: React.FC = ({ children }) => {
             masterChefContract,
             wethContract,
             usdcContract,
+            wbtcContract,
             ethPrice,
             lpContract,
             tokenContract,

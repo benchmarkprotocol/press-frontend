@@ -29,6 +29,9 @@ export const getWethContract = (sushi) => {
 export const getUsdcContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.usdc
 }
+export const getWbtcContract = (sushi) => {
+  return sushi && sushi.contracts && sushi.contracts.wbtc
+}
 export const getMasterChefContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.masterChef
 }
@@ -176,6 +179,29 @@ export const getMarkPerBlock = async (sushi) => {
   }
 }
 
+export const getWBTCPriceFromUniswap = async (wbtcContract, usdcContract) => {
+
+  console.log("CONTRACTS",wbtcContract, usdcContract)
+
+  const lpContractWBTC = await wbtcContract.methods
+    .balanceOf("0x004375dff511095cc5a197a54140a24efef3a416")
+    .call()
+
+      const lpContractUsdc = await usdcContract.methods
+      .balanceOf("0x004375dff511095cc5a197a54140a24efef3a416")
+      .call()
+
+      const wBTCAmount = new BigNumber(lpContractWBTC).div(new BigNumber(10).pow(8)).toNumber()
+
+      const usdcAmount = new BigNumber(lpContractUsdc).div(new BigNumber(10).pow(6)).toNumber()
+
+      const wbtcPrice = parseFloat((usdcAmount/wBTCAmount).toFixed(2))
+
+      //console.log("ETH PRICE?", (usdcAmount/wethAmount), wethAmount, usdcAmount )
+
+      return wbtcPrice;
+}
+
 export const getEthPriceFromUniswap = async (wethContract, usdcContract) => {
 
 
@@ -202,6 +228,7 @@ export const getTotalLPWethValue = async (
   masterChefContract,
   wethContract,
   usdcContract,
+  wbtcContract,
   ethPrice,
   lpContract,
   tokenContract,
@@ -274,6 +301,61 @@ export const getTotalLPWethValue = async (
       wethAmount: usdcAmount.div(ethPrice),
       totalWethValue: (totalLpUsdcValue).div(new BigNumber(10).pow(6)).div(ethPrice),
       tokenPriceInWeth: (usdcAmount).div(tokenAmount).div(ethPrice),
+      poolWeight: await getPoolWeight(masterChefContract, pid),
+    }
+  } else if (pid == 2){ // wbtc pairs
+
+
+    const wbtcPrice = await getWBTCPriceFromUniswap(wbtcContract, usdcContract);
+
+    ///console.log("USDC PAIR")
+    const lpContractWbtc = await wbtcContract.methods
+      .balanceOf(lpContract.options.address)
+      .call()
+
+
+      //console.log("LP contract USDC", pid, lpContractUsdc)
+      
+    // Return p1 * w1 * 2
+    const portionLp = new BigNumber(balance).div(new BigNumber(totalSupply))
+    const lpWbtcWorth = new BigNumber(lpContractWbtc)
+    const totalLpWbtcValue = portionLp.times(lpWbtcWorth).times(new BigNumber(2))
+
+    //console.log("TOTAL USDC POOL VALUE", totalLpUsdcValue.div(new BigNumber(10).pow(6)).toString())
+    // Calculate
+    const tokenAmount = new BigNumber(tokenAmountWholeLP)
+      .times(portionLp)
+      .div(new BigNumber(10).pow(tokenDecimals))
+      //console.log("Token amount", tokenAmount)
+    const wbtcAmount = new BigNumber(lpContractWbtc)
+      .times(portionLp)
+      .div(new BigNumber(10).pow(8))
+
+      //console.log("usdc LP VALUE RET", tokenAmount.toString(), usdcAmount.toString(), pid)
+
+     // console.log("USDC TOTAL VALUE", (totalLpUsdcValue).div(new BigNumber(10).pow(6)).toString())
+      //console.log("USDC TOKEN PRICE", (usdcAmount).div(tokenAmount).div(ethPrice).toString(), ethPrice)
+      //console.log("USDC AMOUNT", usdcAmount.toNumber())
+      /*console.log({
+        wbtcPrice, 
+        lpContractWbtc: lpContractWbtc,
+        portionLp: portionLp.toNumber(),
+        lpWbtcWorth: lpWbtcWorth.toNumber(),
+        totalLpWbtcValue: totalLpWbtcValue.toNumber(),
+
+      tokenAmount,
+      totalBalance: new BigNumber(balance),
+      wethAmount: (wbtcAmount).times(wbtcPrice).div(ethPrice).toNumber(),
+      totalWethValue: (totalLpWbtcValue).times(wbtcPrice).div(new BigNumber(10).pow(8)).div(ethPrice).toNumber(),
+      tokenPriceInWeth: (wbtcAmount).times(wbtcPrice).div(tokenAmount).div(ethPrice).toNumber(),
+      poolWeight: await getPoolWeight(masterChefContract, pid),
+    })*/
+    return {
+      tokenAmount,
+      totalBalance: new BigNumber(balance),
+      wethAmount: (wbtcAmount).times(wbtcPrice).div(ethPrice),
+      totalWethValue: (totalLpWbtcValue).times(wbtcPrice).div(new BigNumber(10).pow(8)).div(ethPrice),
+      tokenPriceInWeth: (wbtcAmount).times(wbtcPrice).div(tokenAmount).div(ethPrice),
       poolWeight: await getPoolWeight(masterChefContract, pid),
     }
   } else {
@@ -449,7 +531,7 @@ export const getXMARKRewards = async (xMarkContract, sushiContract, account) => 
   const totalRewards = (XMARKBalanceOfMARK)// - totalSupplyXMARK
   const shareOfRewards = myXMARKBalance/totalSupplyXMARK
   const myRewards = (shareOfRewards * totalRewards)
-  console.log(myXMARKBalance, totalSupplyXMARK, XMARKBalanceOfMARK, totalRewards, shareOfRewards, myRewards, xMarkContract.address)
+  //console.log(myXMARKBalance, totalSupplyXMARK, XMARKBalanceOfMARK, totalRewards, shareOfRewards, myRewards, xMarkContract.address)
   return myRewards
 }
 
@@ -477,27 +559,32 @@ export const getMARKPriceFromUniswap = async (markContract, usdcContract) => {
 }
 
 export const getXMARKAPY = async (xMarkContract, sushiContract, usdcContract, account, sushi) => {
-  const markPerBlock = await getMarkPerBlock(sushi);
-  const rewardsPerDay = new BigNumber(6500 * 1000000000 * markPerBlock * 0.1);
+  const rewardsPerDay = new BigNumber(655000000000);
   const businessDaysPerYear = new BigNumber(252);
   const myXMARKBalance = await getXMARKBalance(xMarkContract, account);
-  const totalSupplyXMARK = await xMarkContract.methods.totalSupply().call();
-  const shareOfRewards = myXMARKBalance/totalSupplyXMARK
+  const XMARKBalanceOfMARK = await sushiContract.methods.balanceOf(xMarkContract._address).call();
   const markPrice = await getMARKPriceFromUniswap(sushiContract, usdcContract);
+  //console.log("MARK PRICE", markPrice)
   //const rewardValue = (rewardsPerDay*businessDaysPerYear)*shareOfRewards*markPrice
   //const startingValue = (rewardsPerDay*businessDaysPerYear)*shareOfRewards*markPrice
-  console.log("MARK PRICE", markPrice)
-  const apy = new BigNumber(markPrice).times(rewardsPerDay.times(businessDaysPerYear)).div(new BigNumber(markPrice).times(totalSupplyXMARK))
+  //console.log("MARK PRICE", markPrice)
+  const apy = new BigNumber(markPrice).times(rewardsPerDay.times(businessDaysPerYear)).div(new BigNumber(markPrice).times(XMARKBalanceOfMARK)).times(100)
   return apy
 }
 
 export const getMarkStakedValue = async (xMarkContract, sushiContract, usdcContract) => {
   const XMARKBalanceOfMARK = await sushiContract.methods.balanceOf(xMarkContract._address).call();
   const markPrice = await getMARKPriceFromUniswap(sushiContract, usdcContract);
-  console.log("GET STAKED VALUE", XMARKBalanceOfMARK, new BigNumber(XMARKBalanceOfMARK).div(new BigNumber(10).pow(9)).toNumber(), markPrice)
+  //console.log("GET STAKED VALUE", XMARKBalanceOfMARK, new BigNumber(XMARKBalanceOfMARK).div(new BigNumber(10).pow(9)).toNumber(), markPrice)
   return (new BigNumber(XMARKBalanceOfMARK).div(new BigNumber(10).pow(9)).toNumber()) * markPrice;
 }
 
+export const getXMARKValueInMARK = async (xMarkContract, sushiContract, usdcContract) => {
+  const XMARKBalanceOfMARK = await sushiContract.methods.balanceOf(xMarkContract._address).call();
+  const XMARKSupply = await xMarkContract.methods.totalSupply().call();
+  //console.log("XMARK VALUE ", XMARKBalanceOfMARK, XMARKSupply, (new BigNumber(XMARKBalanceOfMARK).div(new BigNumber(10).pow(9))).div(new BigNumber(XMARKSupply).div(new BigNumber(10).pow(9))).toNumber())
+  return (new BigNumber(XMARKBalanceOfMARK).div(new BigNumber(10).pow(9))).div(new BigNumber(XMARKSupply).div(new BigNumber(10).pow(9))).toNumber();
+}
 
 
 

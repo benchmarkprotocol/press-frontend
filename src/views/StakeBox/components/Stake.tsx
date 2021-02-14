@@ -96,7 +96,7 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, name }) => {
 
           </StyledCardHeader>
                   <p style={{color:"#fff", paddingTop:0,paddingBottom:"1em", marginBottom:0, textAlign:'center'}}>
-ℹ️ Converting xMARK tokens back into MARK will automatically claim MARK rewards. xMark tokens can be used for off-chain governance with <a href="#">Snapshot</a>.</p>
+ℹ️  Converting xMARK tokens back into MARK will automatically claim MARK rewards. xMARK tokens can be used for off-chain governance with <a style={{color:"#2CF48B"}} href="https://snapshot.page/#/benchmarkprotocol.eth">Snapshot</a>.</p>
           <StyledCardActions>
             {!allowance.toNumber() ? (
               <Button
