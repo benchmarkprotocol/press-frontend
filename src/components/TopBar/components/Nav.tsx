@@ -28,25 +28,25 @@ const Nav: React.FC = () => {
               href="https://www.youtube.com/watch?v=tQwuzCA8rYE"
               target="_blank"
             >
-              Pools Tutorial
+              Pools Video
             </StyledAbsoluteLinkMenu>
             <StyledAbsoluteLinkMenu
               href="https://medium.com/benchmarkprotocol/transitioning-from-benchmark-launchpad-to-the-press-80e480ee4bc7"
               target="_blank"
             >
-              About Pools
+              Pools Tutorial
             </StyledAbsoluteLinkMenu>
             <StyledAbsoluteLinkMenu
-              href="https://medium.com/r/?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DaZ7W7_HNkxc"
+              href="https://www.youtube.com/watch?v=aZ7W7_HNkxc"
               target="_blank"
             >
-              Staking Tutorial
+              Staking Video
             </StyledAbsoluteLinkMenu>
             <StyledAbsoluteLinkMenu
               href="https://medium.com/p/6ecded56deb/"
               target="_blank"
             >
-              About Staking
+              Staking Tutorial
             </StyledAbsoluteLinkMenu>
 
             <StyledAbsoluteLinkMenu
