@@ -28,7 +28,13 @@ const Nav: React.FC = () => {
               href="https://www.youtube.com/watch?v=tQwuzCA8rYE"
               target="_blank"
             >
-              Pools Video
+              UNI Pools Video
+            </StyledAbsoluteLinkMenu>
+            <StyledAbsoluteLinkMenu
+              href="https://youtu.be/UozC7bjqaS0"
+              target="_blank"
+            >
+              BAL Pools Video
             </StyledAbsoluteLinkMenu>
             <StyledAbsoluteLinkMenu
               href="https://medium.com/benchmarkprotocol/transitioning-from-benchmark-launchpad-to-the-press-80e480ee4bc7"

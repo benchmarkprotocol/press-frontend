@@ -47,6 +47,10 @@ export const contractAddresses = {
     1: '0x5D9972dD3Ba5602574ABeA6bF9E1713568D49903', // press contract
     4: '0x5D9972dD3Ba5602574ABeA6bF9E1713568D49903', // press contract
   },
+  masterChefBalancer: {
+    1: '0x5D9972dD3Ba5602574ABeA6bF9E1713568D49903', // press contract
+    4: '0x5D9972dD3Ba5602574ABeA6bF9E1713568D49903', // press contract
+  },
   xmark:{
     1:"0x36b679bd64Ed73DBfd88909cDCB892cB66Bd4CBb",
     4:"0xa00731DE69ECE9a1B4116A4D6595af42611caCFB",
@@ -127,7 +131,70 @@ export const supportedPools = [
     icon: 'MARK',
     lpAddress: '0x36cD8c1A21b0b7d86A26cE1221f5a48b80FE27c4',
     tokenAddress:'0x67c597624B17b16fb77959217360B7cD18284253'
+  },
+  
+  {
+    pid:3,
+    lpAddresses:{
+      1: '0x8d5bd8407a55110a346ea0c8ac54c9511764ee22',
+    },
+    tokenAddresses: {
+      1: '0x67c597624B17b16fb77959217360B7cD18284253',
+    },
+    name: 'MARK-USDC',
+    symbol: 'MARK-USDC BAL LP',
+    tokenSymbol: 'MARK',
+    icon: 'MARK',
+    lpAddress: '0x8d5bd8407a55110a346ea0c8ac54c9511764ee22',
+    tokenAddress:'0x67c597624B17b16fb77959217360B7cD18284253'
+  },
+  {
+    pid:4,
+    lpAddresses:{
+      1: '0x049c586132110f6551d758deb50a7c984fc0ec59',
+    },
+    tokenAddresses: {
+      1: '0x67c597624B17b16fb77959217360B7cD18284253',
+    },
+    name: 'MARK-ETH',
+    symbol: 'MARK-ETH BAL LP',
+    tokenSymbol: 'MARK',
+    icon: 'MARK',
+    lpAddress: '0x049c586132110f6551d758deb50a7c984fc0ec59',
+    tokenAddress:'0x67c597624B17b16fb77959217360B7cD18284253'
+  }
+]
 
+export const supportedBalancerPools = [
+  {
+    pid:3,
+    lpAddresses:{
+      1: '0x8d5bd8407a55110a346ea0c8ac54c9511764ee22',
+    },
+    tokenAddresses: {
+      1: '0x67c597624B17b16fb77959217360B7cD18284253',
+    },
+    name: 'MARK-USDC',
+    symbol: 'MARK-USDC BAL LP',
+    tokenSymbol: 'MARK',
+    icon: 'MARK',
+    lpAddress: '0x8d5bd8407a55110a346ea0c8ac54c9511764ee22',
+    tokenAddress:'0x67c597624B17b16fb77959217360B7cD18284253'
+  },
+  {
+    pid:4,
+    lpAddresses:{
+      1: '0x049c586132110f6551d758deb50a7c984fc0ec59',
+    },
+    tokenAddresses: {
+      1: '0x67c597624B17b16fb77959217360B7cD18284253',
+    },
+    name: 'MARK-ETH',
+    symbol: 'MARK-ETH BAL LP',
+    tokenSymbol: 'MARK',
+    icon: 'MARK',
+    lpAddress: '0x049c586132110f6551d758deb50a7c984fc0ec59',
+    tokenAddress:'0x67c597624B17b16fb77959217360B7cD18284253'
   }
 ]
 

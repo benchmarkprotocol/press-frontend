@@ -10,6 +10,7 @@ import {
   SUBTRACT_GAS_LIMIT,
   supportedPools,
   supportedStaking,
+  supportedBalancerPools
 } from './constants.js'
 import * as Types from './types.js'
 
@@ -25,10 +26,20 @@ export class Contracts {
 
     this.sushi = new this.web3.eth.Contract(SushiAbi)
     this.masterChef = new this.web3.eth.Contract(MasterChefAbi)
+    this.masterChefBalancer = new this.web3.eth.Contract(MasterChefAbi)
     this.weth = new this.web3.eth.Contract(WETHAbi)
     this.usdc = new this.web3.eth.Contract(ERC20Abi)
     this.xmark = new this.web3.eth.Contract(xMARKAbi)
     this.wbtc = new this.web3.eth.Contract(ERC20Abi)
+
+    this.balancerPools = supportedBalancerPools.map((pool) =>
+      Object.assign(pool, {
+        lpAddress: pool.lpAddresses[networkId],
+        tokenAddress: pool.tokenAddresses[networkId],
+        lpContract: new this.web3.eth.Contract(UNIV2PairAbi),
+        tokenContract: new this.web3.eth.Contract(ERC20Abi),
+      }),
+    )
 
     this.pools = supportedPools.map((pool) =>
       Object.assign(pool, {
@@ -61,6 +72,7 @@ export class Contracts {
 
     setProvider(this.sushi, contractAddresses.sushi[networkId])
     setProvider(this.masterChef, contractAddresses.masterChef[networkId])
+    setProvider(this.masterChefBalancer, contractAddresses.masterChefBalancer[networkId])
     setProvider(this.weth, contractAddresses.weth[networkId])
     setProvider(this.usdc, contractAddresses.usdc[networkId])
     setProvider(this.xmark, contractAddresses.xmark[networkId])
@@ -72,11 +84,19 @@ export class Contracts {
         setProvider(tokenContract, tokenAddress)
       },
     )
+    this.balancerPools.forEach(
+      ({ lpContract, lpAddress, tokenContract, tokenAddress }) => {
+        setProvider(lpContract, lpAddress)
+        setProvider(tokenContract, tokenAddress)
+      },
+    )
+
   }
 
   setDefaultAccount(account) {
     this.sushi.options.from = account
     this.masterChef.options.from = account
+    this.masterChefBalancer.options.from = account
   }
 
   async callContractFunction(method, options) {
