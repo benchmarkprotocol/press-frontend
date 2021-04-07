@@ -73,8 +73,11 @@ const Farm: React.FC = () => {
               <Card>
               
               <NavLink style={{zIndex:2, color:"#999", textAlign:"center", display:"block", position:"absolute", left:20, top:20, textDecoration:"none", padding:14, border:"1px solid #999", borderRadius:12}} to="/pools">&#x2190; Back</NavLink>
-      <a href={`https://info.uniswap.org/pair/${lpTokenAddress}`} target="_blank"><img src={require(`./../../assets/img/info.png`)} style={{zIndex:2, width:25, height:25, top:10, right:10, position:"absolute"}}/></a>
-
+      { (pid ==3 || pid ==4) ?
+        <a href={`https://pools.balancer.exchange/#/pool/${lpTokenAddress}`} target="_blank"><img src={require(`./../../assets/img/info.png`)} style={{zIndex:2, width:25, height:25, top:10, right:10, position:"absolute"}}/></a>
+        :
+        <a href={`https://info.uniswap.org/pair/${lpTokenAddress}`} target="_blank"><img src={require(`./../../assets/img/info.png`)} style={{zIndex:2, width:25, height:25, top:10, right:10, position:"absolute"}}/></a>
+      }
       <Flip left>
       <CardContent>
             <Stake

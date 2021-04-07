@@ -26,7 +26,7 @@ const Harvest: React.FC<HarvestProps> = ({ pid }) => {
           <StyledCardHeader>
             <img src={require('./../../../assets/img/MARK.png')} style={{width:50, height:50, margin:8}}/>
             <StyledActionSpacer />
-            <Value value={getBalanceNumber(earnings)} />
+            <Value value={getBalanceNumber(earnings)} decimals={5} />
             <StyledActionSpacer />
             <Label text="MARK Earned" />
           </StyledCardHeader>

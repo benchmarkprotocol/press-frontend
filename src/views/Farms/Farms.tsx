@@ -27,7 +27,7 @@ const Farms: React.FC = () => {
             <Route exact path={path}>
               <PageHeader
                 icon={false}
-                subtitle="Earn MARK tokens by staking Uniswap V2 LP Tokens."
+                subtitle="Earn MARK tokens by staking LP Tokens."
                 title="Choose a Pool"
               />
               <Spacer size="md" />
@@ -45,7 +45,7 @@ const Farms: React.FC = () => {
             <Route exact path={path}>
               <PageHeader
                 icon={false}
-                subtitle="Earn MARK tokens by staking Uniswap V2 LP Tokens."
+                subtitle="Earn MARK tokens by staking LP Tokens."
                 title="Choose a Pool"
               />
               <Spacer size="md" />

@@ -87,7 +87,12 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, name }) => {
               </div>
             }
             <StyledActionSpacer />
-            <Value value={getBalanceNumber(stakedBalance, 18)} decimals={18}/>
+            { (pid == 3 || pid ==4) ?
+              <Value value={getBalanceNumber(stakedBalance, 18)} decimals={2}/>
+              :
+              <Value value={getBalanceNumber(stakedBalance, 18)} decimals={18}/>
+            }
+            
             <StyledActionSpacer/>
             <Label text={`${tokenName} Staked`} />
 
@@ -96,6 +101,16 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, name }) => {
           }
 
           </StyledCardHeader>
+          { (pid == 3 || pid ==4 || pid==2) ?
+            <><StyledCardActions>
+                <Button
+                  disabled={stakedBalance.eq(new BigNumber(0))}
+                  text="Unstake"
+                  onClick={onPresentWithdraw}
+                />
+              </StyledCardActions>
+            </>
+            :
           <StyledCardActions>
             {!allowance.toNumber() ? (
               <Button
@@ -121,7 +136,8 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, name }) => {
               </>
             )}
 
-          </StyledCardActions>
+            </StyledCardActions>
+          }
           <p style={{color:"#fff", paddingTop:10,paddingBottom:0, marginBottom:0, textAlign:'center'}}>Staking or unstaking LP tokens will automatically claim all MARK.</p>
         </StyledCardContentInner>
       </CardContent>

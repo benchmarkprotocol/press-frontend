@@ -40,7 +40,7 @@ const FarmCards: React.FC<FarmCardsProps>  = ({auth}) => {
   const sushi = useSushi()
   const markPerBlock = useMarkPerBlock(sushi);
   if (auth){
-    //console.log("STAKED VALUE ALL", stakedValue)
+    console.log("STAKED VALUE ALL", stakedValue)
 
 
 
@@ -54,7 +54,7 @@ const FarmCards: React.FC<FarmCardsProps>  = ({auth}) => {
         ? stakedValue[sushiIndex].tokenPriceInWeth
         : new BigNumber((1.42/ethPrice)) //1.4 USD in ethereum
 
-    //console.log("MARK PRICE", sushiPrice.toString(), stakedValue[sushiIndex], sushiIndex, farms[sushiIndex])
+    console.log("MARK PRICE", sushiPrice.toString(), stakedValue[sushiIndex], sushiIndex, farms[sushiIndex])
 
 
     const BLOCKS_PER_YEAR = new BigNumber(2336000)
@@ -69,22 +69,25 @@ const FarmCards: React.FC<FarmCardsProps>  = ({auth}) => {
           totalBalance: stakedValue[i]
             ? stakedValue[i].totalBalance
             : null,
-          apy: stakedValue[i]
+          apy: (stakedValue[i])
             ? sushiPrice
                 .times(SUSHI_PER_BLOCK)
                 .times(BLOCKS_PER_YEAR)
                 .times(stakedValue[i].poolWeight)
-                .div(stakedValue[i].totalWethValue)
+                .div(stakedValue[i].totalWethValue.plus(new BigNumber(0.00000001)))
             : null,
         }
 
-        /*if (stakedValue[i]){
+        if (stakedValue[i]){
           //console.log("FARM LP TOKEN SUPPLY",stakedValue[i] )
           console.log("APY", i, farmWithStakedValue.apy.toNumber(), stakedValue[i].poolWeight.toNumber(), stakedValue[i].totalWethValue.toNumber());
-        }*/
-        
+        }
+
         const newFarmRows = [...farmRows]
-        if (newFarmRows[newFarmRows.length - 1].length === 4) {
+
+        //console.log("FARM NUM", newFarmRows.length, newFarmRows[newFarmRows.length - 1].length)
+
+        if (newFarmRows[newFarmRows.length - 1].length === 3) {
           newFarmRows.push([farmWithStakedValue])
         } else {
           newFarmRows[newFarmRows.length - 1].push(farmWithStakedValue)
@@ -127,7 +130,7 @@ const FarmCards: React.FC<FarmCardsProps>  = ({auth}) => {
         }
         
         const newFarmRows = [...farmRows]
-        if (newFarmRows[newFarmRows.length - 1].length === 4) {
+        if (newFarmRows[newFarmRows.length - 1].length === 3) {
           newFarmRows.push([farmWithStakedValue])
         } else {
           newFarmRows[newFarmRows.length - 1].push(farmWithStakedValue)
@@ -146,7 +149,7 @@ const FarmCards: React.FC<FarmCardsProps>  = ({auth}) => {
                 {farmRow.map((farm, j) => (
                   <React.Fragment key={j}>
                     <FarmCard farm={farm} auth={auth} />
-                    {(j === 0 || j === 1 || j === 2) && <StyledSpacer />}
+                    {(j === 0 || j === 1 ) && <StyledSpacer />}
                   </React.Fragment>
                 ))}
               </StyledRow>
@@ -234,7 +237,28 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, auth }) => {
             
             </div></Flip>
             <Flip left><StyledTitle>{farm.name}</StyledTitle></Flip>
+
+            { (farm.pid ==3 || farm.pid ==4) ?
+              <StyledSubtitle>BAL POOL TOKENS</StyledSubtitle>
+              :
+              <StyledSubtitle>UNISWAP V2 LP TOKENS</StyledSubtitle>
+            }
+            { (farm.pid ==3 || farm.pid ==4 || farm.pid ==2 ) ?
+              <StyledSubtitleRed>EXPIRED</StyledSubtitleRed>
+              :
+              <StyledSubtitleGreen>LIVE</StyledSubtitleGreen>
+            }
+            { (farm.pid ==3 || farm.pid ==4) ?
+              <img src={require(`./../../../assets/img/balancer.png`)} style={{width:25, height:25, top:10, left:10, position:"absolute"}}/>
+              :
+              <img src={require(`./../../../assets/img/uniswaplogo.png`)} style={{width:25, height:25, top:10, left:10, position:"absolute"}}/>
+            }
+
+            { (farm.pid ==3 || farm.pid ==4) ?
+            <a href={`https://pools.balancer.exchange/#/pool/${farm.lpTokenAddress}`} target="_blank"><img src={require(`./../../../assets/img/info.png`)} style={{width:25, height:25, top:10, right:10, position:"absolute"}}/></a>
+              :
             <a href={`https://info.uniswap.org/pair/${farm.lpTokenAddress}`} target="_blank"><img src={require(`./../../../assets/img/info.png`)} style={{width:25, height:25, top:10, right:10, position:"absolute"}}/></a>
+            }
             {/*<StyledDetails>
               <StyledDetail>Deposit {farm.lpToken.toUpperCase()}</StyledDetail>
               <StyledDetail>Earn {farm.earnToken.toUpperCase()}</StyledDetail>
@@ -402,8 +426,6 @@ const StyledCardAccent = styled.div`
 `
 
 const StyledCards = styled.div`
-  width: 900px;
-  padding-left: 114px;
   @media (max-width: 768px) {
     width: 100%;
   }
@@ -419,7 +441,6 @@ const StyledLoadingWrapper = styled.div`
 const StyledRow = styled.div`
   display: flex;
   margin-bottom: ${(props) => props.theme.spacing[4]}px;
-  flex-flow: row wrap;
   @media (max-width: 768px) {
     width: 100%;
     flex-flow: column nowrap;
@@ -432,7 +453,28 @@ const StyledCardWrapper = styled.div`
   width: calc((900px - ${(props) => props.theme.spacing[4]}px * 3) / 4);
   position: relative;
 `
+const StyledSubtitle = styled.p`
+  color: ${(props) => props.theme.color.grey[400]};
+  font-size: 12px;
+  font-weight: 700;
+  margin: ${(props) => props.theme.spacing[2]}px 0 0;
+  padding: 0;
+`
 
+const StyledSubtitleRed = styled.p`
+  color:  #ff3300;
+  font-size: 12px;
+  font-weight: 700;
+  margin: ${(props) => props.theme.spacing[2]}px 0 0;
+  padding: 0;
+`
+const StyledSubtitleGreen = styled.p`
+  color: #40ff00;
+  font-size: 12px;
+  font-weight: 700;
+  margin: ${(props) => props.theme.spacing[2]}px 0 0;
+  padding: 0;
+`
 const StyledTitle = styled.h4`
   color: ${(props) => props.theme.color.grey[600]};
   font-size: 24px;

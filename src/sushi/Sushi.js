@@ -40,6 +40,7 @@ export class Sushi {
     this.sushiAddress = contractAddresses.sushi[networkId]
     this.xmarkAddress = contractAddresses.xmark[networkId]
     this.masterChefAddress = contractAddresses.masterChef[networkId]
+    this.masterChefBalancerAddress = contractAddresses.masterChefBalancer[networkId]
     this.wethAddress = contractAddresses.weth[networkId]
     this.wbtcAddress = contractAddresses.wbtc[networkId]
   }

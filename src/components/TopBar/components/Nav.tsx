@@ -5,49 +5,73 @@ import styled from 'styled-components'
 const Nav: React.FC = () => {
 
   const [menuOpen, toggleMenuOpen] = useState(false)
+  const [tutOpen, toggleTutOpen] = useState(false)
 
   return (
     <StyledNav>
-      <StyledLink onClick={()=> toggleMenuOpen(false)} exact activeClassName="active" to="/">
+      <StyledLink onClick={()=> {toggleMenuOpen(false); toggleTutOpen(false); }} exact activeClassName="active" to="/">
         Home
       </StyledLink>
-      <StyledLink onClick={()=> toggleMenuOpen(false)} exact activeClassName="active" to="/pools">
+      <StyledLink onClick={()=> {toggleMenuOpen(false); toggleTutOpen(false); }} exact activeClassName="active" to="/pools">
         Pools
       </StyledLink>
-      <StyledLink onClick={()=> toggleMenuOpen(false)} exact activeClassName="active" to="/stake">
+      <StyledLink onClick={()=> {toggleMenuOpen(false); toggleTutOpen(false); }} exact activeClassName="active" to="/pools2">
+        BAL Pools
+      </StyledLink>
+
+
+
+      <StyledLink onClick={()=> {toggleMenuOpen(false); toggleTutOpen(false); }} exact activeClassName="active" to="/stake">
         Stake
       </StyledLink>
 
 
-      <div style={{position:"relative"}}>
-          <StyledAbsoluteLink href="#" onClick={()=> toggleMenuOpen(!menuOpen)}>More <span style={{fontSize:10}}> { !menuOpen ? "▼" : "▲"}</span></StyledAbsoluteLink>
 
-        { menuOpen ? 
+      <div style={{position:"relative"}}>
+          <StyledAbsoluteLink href="#" onClick={()=> {toggleTutOpen(!tutOpen); toggleMenuOpen(false);}}>Tutorials <span style={{fontSize:10}}> { !tutOpen ? "▼" : "▲"}</span></StyledAbsoluteLink>
+
+        { tutOpen ? 
           <Dropdown>
             <StyledAbsoluteLinkMenu
               href="https://www.youtube.com/watch?v=tQwuzCA8rYE"
               target="_blank"
             >
-              Pools Tutorial
+              UNI Pools Video
+            </StyledAbsoluteLinkMenu>
+            <StyledAbsoluteLinkMenu
+              href="https://youtu.be/UozC7bjqaS0"
+              target="_blank"
+            >
+              BAL Pools Video
             </StyledAbsoluteLinkMenu>
             <StyledAbsoluteLinkMenu
               href="https://medium.com/benchmarkprotocol/transitioning-from-benchmark-launchpad-to-the-press-80e480ee4bc7"
               target="_blank"
             >
-              About Pools
+              Pools Tutorial
             </StyledAbsoluteLinkMenu>
             <StyledAbsoluteLinkMenu
-              href="https://medium.com/r/?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DaZ7W7_HNkxc"
+              href="https://www.youtube.com/watch?v=aZ7W7_HNkxc"
               target="_blank"
             >
-              Staking Tutorial
+              Staking Video
             </StyledAbsoluteLinkMenu>
             <StyledAbsoluteLinkMenu
               href="https://medium.com/p/6ecded56deb/"
               target="_blank"
             >
-              About Staking
+              Staking Tutorial
             </StyledAbsoluteLinkMenu>
+          </Dropdown>
+          : null
+        }
+      </div>
+
+      <div style={{position:"relative"}}>
+          <StyledAbsoluteLink href="#" onClick={()=> {toggleMenuOpen(!menuOpen); toggleTutOpen(false); }}>More <span style={{fontSize:10}}> { !menuOpen ? "▼" : "▲"}</span></StyledAbsoluteLink>
+
+        { menuOpen ? 
+          <Dropdown>
 
             <StyledAbsoluteLinkMenu
               href="https://snapshot.page/#/benchmarkprotocol.eth"
