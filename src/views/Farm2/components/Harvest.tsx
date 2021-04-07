@@ -6,8 +6,8 @@ import CardContent from '../../../components/CardContent'
 import CardIcon from '../../../components/CardIcon'
 import Label from '../../../components/Label'
 import Value from '../../../components/Value'
-import useEarnings from '../../../hooks/useEarnings'
-import useReward from '../../../hooks/useReward'
+import useEarnings from '../../../balancerhooks/useEarnings'
+import useReward from '../../../balancerhooks/useReward'
 import { getBalanceNumber } from '../../../utils/formatBalance'
 
 interface HarvestProps {

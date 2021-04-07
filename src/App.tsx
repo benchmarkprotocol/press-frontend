@@ -7,6 +7,7 @@ import DisclaimerModal from './components/DisclaimerModal'
 import MobileMenu from './components/MobileMenu'
 import TopBar from './components/TopBar'
 import FarmsProvider from './contexts/Farms'
+import BalancerFarmsProvider from './balancercontexts/BalancerFarms'
 import StakingProvider from './contexts/Staking'
 import ModalsProvider from './contexts/Modals'
 import TransactionProvider from './contexts/Transactions'
@@ -14,13 +15,14 @@ import SushiProvider from './contexts/SushiProvider'
 import useModal from './hooks/useModal'
 import theme from './theme'
 import Farms from './views/Farms'
+import Farms2 from './views/Farms2'
 import StakeBox from './views/StakeBox'
 import Home from './views/Home'
 import FarmMenus from './views/Farms/components/FarmMenus'
 import Logo from './components/Logo'
 import EthPriceProvider from './contexts/EthPriceProvider'
 import APYProvider from './contexts/APYProvider'
-
+import BalancerAPYProvider from './balancercontexts/BalancerAPYProvider'
 const App: React.FC = () => {
   const [mobileMenu, setMobileMenu] = useState(false)
 
@@ -45,7 +47,9 @@ const App: React.FC = () => {
           <Route path="/pools">
             <Farms />
           </Route>
-
+          <Route path="/pools2">
+            <Farms2 />
+          </Route>
           <Route path="/stake">
             <StakeBox/>
           </Route>
@@ -94,14 +98,17 @@ const Providers: React.FC = ({ children }) => {
        
         <SushiProvider>
         <APYProvider>
+        <BalancerAPYProvider>
           <TransactionProvider>
             <FarmsProvider>
+              <BalancerFarmsProvider>
               <StakingProvider>
-             
                 <ModalsProvider>{children}</ModalsProvider>
               </StakingProvider>
+              </BalancerFarmsProvider>
             </FarmsProvider>
           </TransactionProvider>
+          </BalancerAPYProvider>
           </APYProvider>
         </SushiProvider>
         

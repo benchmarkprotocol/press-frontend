@@ -10,8 +10,11 @@ import Spacer from '../../../components/Spacer'
 import Value from '../../../components/Value'
 import SushiIcon from '../../../components/SushiIcon'
 import useAllEarnings from '../../../hooks/useAllEarnings'
+import {default as useAllEarningsBalancer} from '../../../balancerhooks/useAllEarnings'
 import useAllStakedValue from '../../../hooks/useAllStakedValue'
+import {default as useAllStakedValueBalancer} from '../../../balancerhooks/useAllStakedValue'
 import useFarms from '../../../hooks/useFarms'
+import {default as useBalancerFarms} from '../../../balancerhooks/useFarms'
 import useTokenBalance from '../../../hooks/useTokenBalance'
 import useSushi from '../../../hooks/useSushi'
 import useMarkPerBlock from '../../../hooks/useMarkPerBlock'
@@ -32,14 +35,23 @@ const PendingRewards: React.FC = () => {
 
 
   const allEarnings = useAllEarnings()
+  const allEarningsBalancer = useAllEarningsBalancer()
   let sumEarning = 0
   for (let earning of allEarnings) {
     sumEarning += new BigNumber(earning)
-      .div(new BigNumber(10).pow(18))
+      .div(new BigNumber(10).pow(9))
+      .toNumber()
+  }
+  for (let earning of allEarningsBalancer) {
+    sumEarning += new BigNumber(earning)
+      .div(new BigNumber(10).pow(9))
       .toNumber()
   }
 
+  console.log("SUM EARNING", sumEarning)
   const [farms] = useFarms()
+  const [balfarms] = useBalancerFarms()
+
   const allStakedValue = useAllStakedValue()
 
   if (allStakedValue && allStakedValue.length) {
@@ -85,6 +97,7 @@ const Balances: React.FC = () => {
   //const [ethPrice, setEthPrice] = useState<number>();
   const sushi = useSushi()
   const allStakedValue = useAllStakedValue()
+  const allStakedValueBalancer = useAllStakedValueBalancer()
 
   const allMARKStakedValue = useAllMARKStakedValue();
   console.log("STAKED VALUE", allMARKStakedValue)
@@ -101,10 +114,15 @@ const Balances: React.FC = () => {
   }
   */
   const [farms] = useFarms()
-
+  const [balfarms] = useBalancerFarms()
 
   var sumWeth = farms.reduce(
     (c, { id }, i) => (allStakedValue[i] && allStakedValue[i].totalWethValue) ? (c + (allStakedValue[i].totalWethValue.toNumber() || 0)) : 0,
+    0,
+  )
+
+  sumWeth += balfarms.reduce(
+    (c, { id }, i) => (allStakedValueBalancer[i] && allStakedValueBalancer[i].totalWethValue) ? (c + (allStakedValueBalancer[i].totalWethValue.toNumber() || 0)) : 0,
     0,
   )
 
@@ -178,7 +196,7 @@ const Balances: React.FC = () => {
         </CardContent>
         <Footnote>
           Active Pools
-          <FootnoteValue>{(farms.length+1)}</FootnoteValue>
+          <FootnoteValue>{(farms.length+balfarms.length+1)}</FootnoteValue>
         </Footnote>
         </Flip>
       </Card>

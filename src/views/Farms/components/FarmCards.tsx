@@ -40,7 +40,7 @@ const FarmCards: React.FC<FarmCardsProps>  = ({auth}) => {
   const sushi = useSushi()
   const markPerBlock = useMarkPerBlock(sushi);
   if (auth){
-    //console.log("STAKED VALUE ALL", stakedValue)
+    console.log("STAKED VALUE ALL", stakedValue)
 
 
 
@@ -54,7 +54,7 @@ const FarmCards: React.FC<FarmCardsProps>  = ({auth}) => {
         ? stakedValue[sushiIndex].tokenPriceInWeth
         : new BigNumber((1.42/ethPrice)) //1.4 USD in ethereum
 
-    //console.log("MARK PRICE", sushiPrice.toString(), stakedValue[sushiIndex], sushiIndex, farms[sushiIndex])
+    console.log("MARK PRICE", sushiPrice.toString(), stakedValue[sushiIndex], sushiIndex, farms[sushiIndex])
 
 
     const BLOCKS_PER_YEAR = new BigNumber(2336000)
@@ -69,19 +69,19 @@ const FarmCards: React.FC<FarmCardsProps>  = ({auth}) => {
           totalBalance: stakedValue[i]
             ? stakedValue[i].totalBalance
             : null,
-          apy: stakedValue[i]
+          apy: (stakedValue[i])
             ? sushiPrice
                 .times(SUSHI_PER_BLOCK)
                 .times(BLOCKS_PER_YEAR)
                 .times(stakedValue[i].poolWeight)
-                .div(stakedValue[i].totalWethValue)
+                .div(stakedValue[i].totalWethValue.plus(new BigNumber(0.00000001)))
             : null,
         }
 
-        /*if (stakedValue[i]){
+        if (stakedValue[i]){
           //console.log("FARM LP TOKEN SUPPLY",stakedValue[i] )
           console.log("APY", i, farmWithStakedValue.apy.toNumber(), stakedValue[i].poolWeight.toNumber(), stakedValue[i].totalWethValue.toNumber());
-        }*/
+        }
 
         const newFarmRows = [...farmRows]
 
@@ -243,7 +243,11 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, auth }) => {
               :
               <StyledSubtitle>UNISWAP V2 LP TOKENS</StyledSubtitle>
             }
-
+            { (farm.pid ==3 || farm.pid ==4 || farm.pid ==2 ) ?
+              <StyledSubtitleRed>EXPIRED</StyledSubtitleRed>
+              :
+              <StyledSubtitleGreen>LIVE</StyledSubtitleGreen>
+            }
             { (farm.pid ==3 || farm.pid ==4) ?
               <img src={require(`./../../../assets/img/balancer.png`)} style={{width:25, height:25, top:10, left:10, position:"absolute"}}/>
               :
@@ -451,6 +455,21 @@ const StyledCardWrapper = styled.div`
 `
 const StyledSubtitle = styled.p`
   color: ${(props) => props.theme.color.grey[400]};
+  font-size: 12px;
+  font-weight: 700;
+  margin: ${(props) => props.theme.spacing[2]}px 0 0;
+  padding: 0;
+`
+
+const StyledSubtitleRed = styled.p`
+  color:  #ff3300;
+  font-size: 12px;
+  font-weight: 700;
+  margin: ${(props) => props.theme.spacing[2]}px 0 0;
+  padding: 0;
+`
+const StyledSubtitleGreen = styled.p`
+  color: #40ff00;
   font-size: 12px;
   font-weight: 700;
   margin: ${(props) => props.theme.spacing[2]}px 0 0;

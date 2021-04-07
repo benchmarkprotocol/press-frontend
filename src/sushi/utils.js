@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
-import { supportedPools, supportedStaking } from './lib/constants'
+import { supportedPools, supportedBalancerPools, supportedStaking } from './lib/constants'
 
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
@@ -18,7 +18,7 @@ export const getMasterChefAddress = (sushi) => {
   return sushi && sushi.masterChefAddress
 }
 export const getMasterChefBalancerAddress = (sushi) => {
-  return sushi && sushi.masterChefAddress
+  return sushi && sushi.masterChefBalancerAddress
 }
 export const getSushiAddress = (sushi) => {
   return sushi && sushi.sushiAddress
@@ -39,7 +39,7 @@ export const getMasterChefContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.masterChef
 }
 export const getMasterChefBalancerContract = (sushi) => {
-  return sushi && sushi.contracts && sushi.contracts.masterChef
+  return sushi && sushi.contracts && sushi.contracts.masterChefBalancer
 }
 export const getXMARKContract = (sushi) => {
   return sushi && sushi.contracts && sushi.contracts.xmark
@@ -222,7 +222,7 @@ export const getPoolWeight = async (masterChefContract, pid) => {
   return new BigNumber(allocPoint).div(new BigNumber(totalAllocPoint))
 }
 
-export const getBalancerPoolWeight = async (masterChefContract, pid) => {
+export const getBalancerPoolWeight = async (masterChefBalancerContract, pid) => {
   const { allocPoint } = await masterChefBalancerContract.methods.poolInfo(pid).call()
   const totalAllocPoint = await masterChefBalancerContract.methods
     .totalAllocPoint()
@@ -237,7 +237,7 @@ export const getEarned = async (masterChefContract, pid, account) => {
   //return markEarned;
 }
 
-export const getBalancerEarned = async (masterChefContract, pid, account) => {
+export const getBalancerEarned = async (masterChefBalancerContract, pid, account) => {
   //console.log("masterchef", masterChefContract, masterChefContract.methods.pendingMark )
   return masterChefBalancerContract.methods.pendingMark(pid, account).call();
   //console.log("MARK EARNED", markEarned)
@@ -323,7 +323,7 @@ export const getTotalLPWethValue = async (
 ) => {
 
 
-//console.log("TOKEN/LP contracts", tokenContract, lpContract)
+console.log("TOKEN/LP contracts", tokenContract, lpContract)
   //console.log("GET TOTAL LP VALUE", pid)
   // Get balance of the token address
   const tokenAmountWholeLP = await tokenContract.methods
@@ -573,26 +573,28 @@ export const getTotalLPWethValueBalancer = async (
 ) => {
 
 
-//console.log("TOKEN/LP contracts", tokenContract, lpContract)
+console.log("BAL TOKEN/LP contracts", tokenContract, lpContract, lpContract.options.address, pid)
   //console.log("GET TOTAL LP VALUE", pid)
   // Get balance of the token address
   const tokenAmountWholeLP = await tokenContract.methods
     .balanceOf(lpContract.options.address)
     .call()
 
+    console.log("TEST1")
+
     //console.log("TOKEN AMOUNT WHOEL LP", pid, tokenAmountWholeLP)
   const tokenDecimals = await tokenContract.methods.decimals().call()
-
+console.log("TEST2")
   //console.log("TOKEN DECIMALS", pid, tokenDecimals)
   // Get the share of lpContract that masterChefContract owns
   const balance = await lpContract.methods
-    .balanceOf(masterChefContract.options.address)
+    .balanceOf(masterChefBalancerContract.options.address)
     .call()
-
+console.log("TEST3")
     //console.log("token balance", pid, balance)
   // Convert that into the portion of total lpContract = p1
   const totalSupply = await lpContract.methods.totalSupply().call()
-
+console.log("TEST4")
   //console.log("Total supply", pid, totalSupply)
   //console.log("total supply", totalSupply)
   // Get total weth value for the lpContract = w1
@@ -601,14 +603,14 @@ export const getTotalLPWethValueBalancer = async (
     console.log("LOADED ETH PRICE FROM UNISWAP")
   }
 
-  if (pid == 0){ // balancer usdc pairs
+  if (pid == 1){ // balancer usdc pairs
 
     ///console.log("USDC PAIR")
     const lpContractUsdc = await usdcContract.methods
       .balanceOf(lpContract.options.address)
       .call()
 
-
+console.log("TEST5")
       //console.log("LP contract USDC", pid, lpContractUsdc)
       
     // Return p1 * w1 * 2
@@ -626,21 +628,21 @@ export const getTotalLPWethValueBalancer = async (
       .times(portionLp)
       .div(new BigNumber(10).pow(6))
 
-      //console.log("usdc LP VALUE RET", tokenAmount.toString(), usdcAmount.toString(), pid)
+      console.log("usdc LP VALUE RET", tokenAmount.toString(), usdcAmount.toString(), pid)
 
-     // console.log("USDC TOTAL VALUE", (totalLpUsdcValue).div(new BigNumber(10).pow(6)).toString())
-      //console.log("USDC TOKEN PRICE", (usdcAmount).div(tokenAmount).div(ethPrice).toString(), ethPrice)
-      //console.log("USDC AMOUNT", usdcAmount.toNumber())
+     console.log("USDC TOTAL VALUE", (totalLpUsdcValue).div(new BigNumber(10).pow(6)).toString())
+      console.log("USDC TOKEN PRICE", (usdcAmount).div(tokenAmount).div(ethPrice).toString(), ethPrice)
+      console.log("USDC AMOUNT", usdcAmount.toNumber())
 
     return {
       tokenAmount,
       totalBalance: new BigNumber(balance),
       wethAmount: usdcAmount.div(ethPrice),
       totalWethValue: (totalLpUsdcValue).div(new BigNumber(10).pow(6)).div(ethPrice),
-      tokenPriceInWeth: (usdcAmount).div(tokenAmount).div(ethPrice),
-      poolWeight: await getPoolWeight(masterChefContract, pid),
+      tokenPriceInWeth: (usdcAmount).times(8).div(2).div(tokenAmount).div(ethPrice),
+      poolWeight: await getPoolWeight(masterChefBalancerContract, pid),
     }
-  } else if (pid == 1){ // balancer ethereum pool
+  } else if (pid == 0){ // balancer ethereum pool
 
     const lpContractWeth = await wethContract.methods
       .balanceOf(lpContract.options.address)
@@ -671,8 +673,8 @@ export const getTotalLPWethValueBalancer = async (
       totalBalance: new BigNumber(balance),
       wethAmount,
       totalWethValue: totalLpWethValue.div(new BigNumber(10).pow(18)),
-      tokenPriceInWeth: wethAmount.div(tokenAmount),
-      poolWeight: await getPoolWeight(masterChefContract, pid),
+      tokenPriceInWeth: wethAmount.times(8).div(2).div(tokenAmount),
+      poolWeight: await getPoolWeight(masterChefBalancerContract, pid),
     }
   }
 }

@@ -101,7 +101,7 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, name }) => {
           }
 
           </StyledCardHeader>
-          { (pid == 3 || pid ==4) ?
+          { (pid == 3 || pid ==4 || pid==2) ?
             <><StyledCardActions>
                 <Button
                   disabled={stakedBalance.eq(new BigNumber(0))}

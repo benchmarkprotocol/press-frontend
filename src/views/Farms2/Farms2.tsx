@@ -11,11 +11,11 @@ import WalletProviderModal from '../../components/WalletProviderModal'
 
 import useModal from '../../hooks/useModal'
 
-import Farm from '../Farm'
+import Farm2 from '../Farm2'
 import Spacer from '../../components/Spacer'
 import FarmCards from './components/FarmCards'
 import FarmMenus from './components/FarmMenus'
-const Farms: React.FC = () => {
+const Farms2: React.FC = () => {
   const { path } = useRouteMatch()
   const { account } = useWallet()
   const [onPresentWalletProviderModal] = useModal(<WalletProviderModal />)
@@ -36,7 +36,7 @@ const Farms: React.FC = () => {
               <FarmCards auth={true}/>
             </Route>
             <Route path={`${path}/:farmId`}>
-              <Farm/>
+              <Farm2/>
             </Route>
             <Spacer size="lg" />
           </>
@@ -54,7 +54,7 @@ const Farms: React.FC = () => {
               <FarmCards auth={false}/>
             </Route>
             <Route path={`${path}/:farmId`}>
-              <Farm/>
+              <Farm2/>
             </Route>
             <Spacer size="lg" />
           </>
@@ -64,4 +64,4 @@ const Farms: React.FC = () => {
   )
 }
 
-export default Farms
+export default Farms2

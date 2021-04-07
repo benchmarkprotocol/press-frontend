@@ -5,24 +5,32 @@ import styled from 'styled-components'
 const Nav: React.FC = () => {
 
   const [menuOpen, toggleMenuOpen] = useState(false)
+  const [tutOpen, toggleTutOpen] = useState(false)
 
   return (
     <StyledNav>
-      <StyledLink onClick={()=> toggleMenuOpen(false)} exact activeClassName="active" to="/">
+      <StyledLink onClick={()=> {toggleMenuOpen(false); toggleTutOpen(false); }} exact activeClassName="active" to="/">
         Home
       </StyledLink>
-      <StyledLink onClick={()=> toggleMenuOpen(false)} exact activeClassName="active" to="/pools">
+      <StyledLink onClick={()=> {toggleMenuOpen(false); toggleTutOpen(false); }} exact activeClassName="active" to="/pools">
         Pools
       </StyledLink>
-      <StyledLink onClick={()=> toggleMenuOpen(false)} exact activeClassName="active" to="/stake">
+      <StyledLink onClick={()=> {toggleMenuOpen(false); toggleTutOpen(false); }} exact activeClassName="active" to="/pools2">
+        BAL Pools
+      </StyledLink>
+
+
+
+      <StyledLink onClick={()=> {toggleMenuOpen(false); toggleTutOpen(false); }} exact activeClassName="active" to="/stake">
         Stake
       </StyledLink>
 
 
-      <div style={{position:"relative"}}>
-          <StyledAbsoluteLink href="#" onClick={()=> toggleMenuOpen(!menuOpen)}>More <span style={{fontSize:10}}> { !menuOpen ? "▼" : "▲"}</span></StyledAbsoluteLink>
 
-        { menuOpen ? 
+      <div style={{position:"relative"}}>
+          <StyledAbsoluteLink href="#" onClick={()=> {toggleTutOpen(!tutOpen); toggleMenuOpen(false);}}>Tutorials <span style={{fontSize:10}}> { !tutOpen ? "▼" : "▲"}</span></StyledAbsoluteLink>
+
+        { tutOpen ? 
           <Dropdown>
             <StyledAbsoluteLinkMenu
               href="https://www.youtube.com/watch?v=tQwuzCA8rYE"
@@ -54,6 +62,16 @@ const Nav: React.FC = () => {
             >
               Staking Tutorial
             </StyledAbsoluteLinkMenu>
+          </Dropdown>
+          : null
+        }
+      </div>
+
+      <div style={{position:"relative"}}>
+          <StyledAbsoluteLink href="#" onClick={()=> {toggleMenuOpen(!menuOpen); toggleTutOpen(false); }}>More <span style={{fontSize:10}}> { !menuOpen ? "▼" : "▲"}</span></StyledAbsoluteLink>
+
+        { menuOpen ? 
+          <Dropdown>
 
             <StyledAbsoluteLinkMenu
               href="https://snapshot.page/#/benchmarkprotocol.eth"

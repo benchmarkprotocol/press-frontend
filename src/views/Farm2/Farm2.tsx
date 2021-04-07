@@ -5,10 +5,10 @@ import { useWallet } from 'use-wallet'
 import { provider } from 'web3-core'
 import PageHeader from '../../components/PageHeader'
 import Spacer from '../../components/Spacer'
-import useFarm from '../../hooks/useFarm'
-import useRedeem from '../../hooks/useRedeem'
-import useSushi from '../../hooks/useSushi'
-import { getMasterChefContract } from '../../sushi/utils'
+import useFarm from '../../balancerhooks/useFarm'
+import useRedeem from '../../balancerhooks/useRedeem'
+import useSushi from '../../balancerhooks/useSushi'
+import { getMasterChefBalancerContract } from '../../sushi/utils'
 import { getContract } from '../../utils/erc20'
 import Harvest from './components/Harvest'
 import Stake from './components/Stake'
@@ -16,7 +16,7 @@ import Card from '../../components/Card'
 import CardContent from '../../components/CardContent'
 import { NavLink } from 'react-router-dom'
 const Flip = require('react-reveal/Flip');
-const Farm: React.FC = () => {
+const Farm2: React.FC = () => {
   const { farmId } = useParams()
   const {
     pid,
@@ -47,7 +47,7 @@ const Farm: React.FC = () => {
     return getContract(ethereum as provider, lpTokenAddress)
   }, [ethereum, lpTokenAddress])
 
-  const { onRedeem } = useRedeem(getMasterChefContract(sushi))
+  const { onRedeem } = useRedeem(getMasterChefBalancerContract(sushi))
 
   const lpTokenName = useMemo(() => {
     return lpToken.toUpperCase()
@@ -72,7 +72,7 @@ const Farm: React.FC = () => {
           <StyledCardWrapper>
               <Card>
               
-              <NavLink style={{zIndex:2, color:"#999", textAlign:"center", display:"block", position:"absolute", left:20, top:20, textDecoration:"none", padding:14, border:"1px solid #999", borderRadius:12}} to="/pools">&#x2190; Back</NavLink>
+              <NavLink style={{zIndex:2, color:"#999", textAlign:"center", display:"block", position:"absolute", left:20, top:20, textDecoration:"none", padding:14, border:"1px solid #999", borderRadius:12}} to="/pools2">&#x2190; Back</NavLink>
       { (pid ==3 || pid ==4) ?
         <a href={`https://pools.balancer.exchange/#/pool/${lpTokenAddress}`} target="_blank"><img src={require(`./../../assets/img/info.png`)} style={{zIndex:2, width:25, height:25, top:10, right:10, position:"absolute"}}/></a>
         :
@@ -139,4 +139,4 @@ const StyledInfo = styled.h3`
   text-align: center;
 `
 
-export default Farm
+export default Farm2

@@ -41,15 +41,15 @@ export const addressMap = {
 export const contractAddresses = {
   sushi: {
     1: '0x67c597624B17b16fb77959217360B7cD18284253', //mark token contract
-    4: '0xbCcab055f32F0EA412cbd3de598E19d33c50BdC3',
+    4: '0x5b0aCa386EE6bd89f917d8278047c9DCda04F61A',
   },
   masterChef: {
     1: '0x5D9972dD3Ba5602574ABeA6bF9E1713568D49903', // press contract
-    4: '0x5D9972dD3Ba5602574ABeA6bF9E1713568D49903', // press contract
+    4: '0x853C75720Eba5c1173eA6E127F755F139500B733', // press contract
   },
   masterChefBalancer: {
-    1: '0x5D9972dD3Ba5602574ABeA6bF9E1713568D49903', // press contract
-    4: '0x5D9972dD3Ba5602574ABeA6bF9E1713568D49903', // press contract
+    1: '0x321849C98b28756274443287653607Ec5D747b8F', // press contract
+    4: '0x853C75720Eba5c1173eA6E127F755F139500B733', // press contract
   },
   xmark:{
     1:"0x36b679bd64Ed73DBfd88909cDCB892cB66Bd4CBb",
@@ -65,6 +65,7 @@ export const contractAddresses = {
   },
   wbtc:{
     1:'0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
+    4: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
   }
 }
 
@@ -133,7 +134,7 @@ export const supportedPools = [
     tokenAddress:'0x67c597624B17b16fb77959217360B7cD18284253'
   },
   
-  {
+ /* {
     pid:3,
     lpAddresses:{
       1: '0x8d5bd8407a55110a346ea0c8ac54c9511764ee22',
@@ -162,27 +163,12 @@ export const supportedPools = [
     icon: 'MARK',
     lpAddress: '0x049c586132110f6551d758deb50a7c984fc0ec59',
     tokenAddress:'0x67c597624B17b16fb77959217360B7cD18284253'
-  }
+  }*/
 ]
 
 export const supportedBalancerPools = [
   {
-    pid:3,
-    lpAddresses:{
-      1: '0x8d5bd8407a55110a346ea0c8ac54c9511764ee22',
-    },
-    tokenAddresses: {
-      1: '0x67c597624B17b16fb77959217360B7cD18284253',
-    },
-    name: 'MARK-USDC',
-    symbol: 'MARK-USDC BAL LP',
-    tokenSymbol: 'MARK',
-    icon: 'MARK',
-    lpAddress: '0x8d5bd8407a55110a346ea0c8ac54c9511764ee22',
-    tokenAddress:'0x67c597624B17b16fb77959217360B7cD18284253'
-  },
-  {
-    pid:4,
+    pid:0,
     lpAddresses:{
       1: '0x049c586132110f6551d758deb50a7c984fc0ec59',
     },
@@ -194,6 +180,21 @@ export const supportedBalancerPools = [
     tokenSymbol: 'MARK',
     icon: 'MARK',
     lpAddress: '0x049c586132110f6551d758deb50a7c984fc0ec59',
+    tokenAddress:'0x67c597624B17b16fb77959217360B7cD18284253'
+  },
+  {
+    pid:1,
+    lpAddresses:{
+      1: '0x8d5bd8407a55110a346ea0c8ac54c9511764ee22',
+    },
+    tokenAddresses: {
+      1: '0x67c597624B17b16fb77959217360B7cD18284253',
+    },
+    name: 'MARK-USDC',
+    symbol: 'MARK-USDC BAL LP',
+    tokenSymbol: 'MARK',
+    icon: 'MARK',
+    lpAddress: '0x8d5bd8407a55110a346ea0c8ac54c9511764ee22',
     tokenAddress:'0x67c597624B17b16fb77959217360B7cD18284253'
   }
 ]

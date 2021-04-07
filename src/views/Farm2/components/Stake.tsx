@@ -10,13 +10,13 @@ import IconButton from '../../../components/IconButton'
 import { AddIcon } from '../../../components/icons'
 import Label from '../../../components/Label'
 import Value from '../../../components/Value'
-import useAllowance from '../../../hooks/useAllowance'
-import useApprove from '../../../hooks/useApprove'
-import useModal from '../../../hooks/useModal'
-import useStake from '../../../hooks/useStake'
-import useStakedBalance from '../../../hooks/useStakedBalance'
-import useTokenBalance from '../../../hooks/useTokenBalance'
-import useUnstake from '../../../hooks/useUnstake'
+import useAllowance from '../../../balancerhooks/useAllowance'
+import useApprove from '../../../balancerhooks/useApprove'
+import useModal from '../../../balancerhooks/useModal'
+import useStake from '../../../balancerhooks/useStake'
+import useStakedBalance from '../../../balancerhooks/useStakedBalance'
+import useTokenBalance from '../../../balancerhooks/useTokenBalance'
+import useUnstake from '../../../balancerhooks/useUnstake'
 import { getBalanceNumber } from '../../../utils/formatBalance'
 import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
@@ -87,11 +87,7 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, name }) => {
               </div>
             }
             <StyledActionSpacer />
-            { (pid == 3 || pid ==4) ?
-              <Value value={getBalanceNumber(stakedBalance, 18)} decimals={2}/>
-              :
-              <Value value={getBalanceNumber(stakedBalance, 18)} decimals={18}/>
-            }
+            <Value value={getBalanceNumber(stakedBalance, 18)} decimals={2}/>
             
             <StyledActionSpacer/>
             <Label text={`${tokenName} Staked`} />
@@ -101,16 +97,7 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, name }) => {
           }
 
           </StyledCardHeader>
-          { (pid == 3 || pid ==4) ?
-            <><StyledCardActions>
-                <Button
-                  disabled={stakedBalance.eq(new BigNumber(0))}
-                  text="Unstake"
-                  onClick={onPresentWithdraw}
-                />
-              </StyledCardActions>
-            </>
-            :
+
           <StyledCardActions>
             {!allowance.toNumber() ? (
               <Button
@@ -137,7 +124,7 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, name }) => {
             )}
 
             </StyledCardActions>
-          }
+
           <p style={{color:"#fff", paddingTop:10,paddingBottom:0, marginBottom:0, textAlign:'center'}}>Staking or unstaking LP tokens will automatically claim all MARK.</p>
         </StyledCardContentInner>
       </CardContent>

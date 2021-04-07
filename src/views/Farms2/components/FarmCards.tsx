@@ -9,18 +9,18 @@ import CardContent from '../../../components/CardContent'
 import CardIcon from '../../../components/CardIcon'
 import Loader from '../../../components/Loader'
 import Spacer from '../../../components/Spacer'
-import { Farm } from '../../../contexts/Farms'
+import { Farm } from '../../../balancercontexts/BalancerFarms'
 import useAllStakedValue, {
   StakedValue,
-} from '../../../hooks/useAllStakedValue'
-import useFarms from '../../../hooks/useFarms'
-import useSushi from '../../../hooks/useSushi'
-import useEthPrice from '../../../hooks/useEthPrice'
-import useStakedBalance from '../../../hooks/useStakedBalance'
-import { getEarned, getMasterChefContract } from '../../../sushi/utils'
+} from '../../../balancerhooks/useAllStakedValue'
+import useFarms from '../../../balancerhooks/useFarms'
+import useSushi from '../../../balancerhooks/useSushi'
+import useEthPrice from '../../../balancerhooks/useEthPrice'
+import useStakedBalance from '../../../balancerhooks/useStakedBalance'
+import { getBalancerEarned, getMasterChefBalancerContract } from '../../../sushi/utils'
 import { bnToDec } from '../../../utils'
 import markIcon from '../../assets/img/mark.png'
-import useMarkPerBlock from '../../../hooks/useMarkPerBlock'
+import useMarkPerBlock from '../../../balancerhooks/useMarkPerBlock'
 const Flip = require('react-reveal/Flip');
 
 interface FarmWithStakedValue extends Farm, StakedValue {
@@ -39,8 +39,10 @@ const FarmCards: React.FC<FarmCardsProps>  = ({auth}) => {
   const stakedValue = useAllStakedValue()
   const sushi = useSushi()
   const markPerBlock = useMarkPerBlock(sushi);
+
+  console.log("BAL ETH PRICE", ethPrice)
   if (auth){
-    //console.log("STAKED VALUE ALL", stakedValue)
+    console.log("BAL STAKED VALUE ALL", stakedValue)
 
 
 
@@ -54,8 +56,10 @@ const FarmCards: React.FC<FarmCardsProps>  = ({auth}) => {
         ? stakedValue[sushiIndex].tokenPriceInWeth
         : new BigNumber((1.42/ethPrice)) //1.4 USD in ethereum
 
-    //console.log("MARK PRICE", sushiPrice.toString(), stakedValue[sushiIndex], sushiIndex, farms[sushiIndex])
+    console.log("BAL MARK PRICE", sushiPrice.toString(), stakedValue[sushiIndex], sushiIndex, farms[sushiIndex])
 
+
+    console.log("BAL Mark per block", markPerBlock)
 
     const BLOCKS_PER_YEAR = new BigNumber(2336000)
     const SUSHI_PER_BLOCK = new BigNumber(markPerBlock || 0.5)
@@ -74,14 +78,14 @@ const FarmCards: React.FC<FarmCardsProps>  = ({auth}) => {
                 .times(SUSHI_PER_BLOCK)
                 .times(BLOCKS_PER_YEAR)
                 .times(stakedValue[i].poolWeight)
-                .div(stakedValue[i].totalWethValue)
+                .div(stakedValue[i].totalWethValue.plus(new BigNumber(0.00000001)))
             : null,
         }
 
-        /*if (stakedValue[i]){
+        if (stakedValue[i]){
           //console.log("FARM LP TOKEN SUPPLY",stakedValue[i] )
-          console.log("APY", i, farmWithStakedValue.apy.toNumber(), stakedValue[i].poolWeight.toNumber(), stakedValue[i].totalWethValue.toNumber());
-        }*/
+          console.log("BAL APY", i, farmWithStakedValue.apy.toNumber(), stakedValue[i].poolWeight.toNumber(), stakedValue[i].totalWethValue.toNumber());
+        }
 
         const newFarmRows = [...farmRows]
 
@@ -201,8 +205,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, auth }) => {
   useEffect(() => {
     async function fetchEarned() {
       if (sushi) return
-      const earned = await getEarned(
-        getMasterChefContract(sushi),
+      const earned = await getBalancerEarned(
+        getMasterChefBalancerContract(sushi),
         lpTokenAddress,
         account,
       )
@@ -238,23 +242,16 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, auth }) => {
             </div></Flip>
             <Flip left><StyledTitle>{farm.name}</StyledTitle></Flip>
 
-            { (farm.pid ==3 || farm.pid ==4) ?
+
               <StyledSubtitle>BAL POOL TOKENS</StyledSubtitle>
-              :
-              <StyledSubtitle>UNISWAP V2 LP TOKENS</StyledSubtitle>
-            }
+              <StyledSubtitleGreen>LIVE</StyledSubtitleGreen>
 
-            { (farm.pid ==3 || farm.pid ==4) ?
+
               <img src={require(`./../../../assets/img/balancer.png`)} style={{width:25, height:25, top:10, left:10, position:"absolute"}}/>
-              :
-              <img src={require(`./../../../assets/img/uniswaplogo.png`)} style={{width:25, height:25, top:10, left:10, position:"absolute"}}/>
-            }
 
-            { (farm.pid ==3 || farm.pid ==4) ?
+
             <a href={`https://pools.balancer.exchange/#/pool/${farm.lpTokenAddress}`} target="_blank"><img src={require(`./../../../assets/img/info.png`)} style={{width:25, height:25, top:10, right:10, position:"absolute"}}/></a>
-              :
-            <a href={`https://info.uniswap.org/pair/${farm.lpTokenAddress}`} target="_blank"><img src={require(`./../../../assets/img/info.png`)} style={{width:25, height:25, top:10, right:10, position:"absolute"}}/></a>
-            }
+
             {/*<StyledDetails>
               <StyledDetail>Deposit {farm.lpToken.toUpperCase()}</StyledDetail>
               <StyledDetail>Earn {farm.earnToken.toUpperCase()}</StyledDetail>
@@ -353,7 +350,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, auth }) => {
             <Button
               disabled={!auth || !poolActive}
               text={(auth && poolActive) ? 'Select' : 'Connect Wallet to Select'}
-              to={`/pools/${farm.id}`}
+              to={`/pools2/${farm.id}`}
               noBottomMargin={true}
             >
               {!poolActive && (
@@ -451,6 +448,20 @@ const StyledCardWrapper = styled.div`
 `
 const StyledSubtitle = styled.p`
   color: ${(props) => props.theme.color.grey[400]};
+  font-size: 12px;
+  font-weight: 700;
+  margin: ${(props) => props.theme.spacing[2]}px 0 0;
+  padding: 0;
+`
+const StyledSubtitleRed = styled.p`
+  color:  #ff3300;
+  font-size: 12px;
+  font-weight: 700;
+  margin: ${(props) => props.theme.spacing[2]}px 0 0;
+  padding: 0;
+`
+const StyledSubtitleGreen = styled.p`
+  color: #40ff00;
   font-size: 12px;
   font-weight: 700;
   margin: ${(props) => props.theme.spacing[2]}px 0 0;
